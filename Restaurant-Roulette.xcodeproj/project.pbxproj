@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D463E901E5DF7EF000BA47A /* roulette-wheel.gif in Resources */ = {isa = PBXBuildFile; fileRef = 3D463E8F1E5DF7EF000BA47A /* roulette-wheel.gif */; };
+		3D463E921E5DF825000BA47A /* americanroulette.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D463E911E5DF825000BA47A /* americanroulette.png */; };
 		3DB5F8211E5DF2A300EE6F44 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB5F8201E5DF2A300EE6F44 /* AppDelegate.swift */; };
 		3DB5F8231E5DF2A300EE6F44 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB5F8221E5DF2A300EE6F44 /* ViewController.swift */; };
 		3DB5F8261E5DF2A300EE6F44 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB5F8241E5DF2A300EE6F44 /* Main.storyboard */; };
@@ -34,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D463E8F1E5DF7EF000BA47A /* roulette-wheel.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = "roulette-wheel.gif"; path = "../../roulette-wheel.gif"; sourceTree = "<group>"; };
+		3D463E911E5DF825000BA47A /* americanroulette.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = americanroulette.png; path = ../../americanroulette.png; sourceTree = "<group>"; };
 		3DB5F81D1E5DF2A300EE6F44 /* Restaurant-Roulette.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Restaurant-Roulette.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DB5F8201E5DF2A300EE6F44 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3DB5F8221E5DF2A300EE6F44 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -100,8 +104,10 @@
 				3DB5F8201E5DF2A300EE6F44 /* AppDelegate.swift */,
 				3DB5F8221E5DF2A300EE6F44 /* ViewController.swift */,
 				3DB5F8241E5DF2A300EE6F44 /* Main.storyboard */,
+				3D463E8F1E5DF7EF000BA47A /* roulette-wheel.gif */,
 				3DB5F8271E5DF2A300EE6F44 /* Assets.xcassets */,
 				3DB5F8291E5DF2A300EE6F44 /* LaunchScreen.storyboard */,
+				3D463E911E5DF825000BA47A /* americanroulette.png */,
 				3DB5F82C1E5DF2A300EE6F44 /* Info.plist */,
 			);
 			path = "Restaurant-Roulette";
@@ -235,6 +241,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D463E921E5DF825000BA47A /* americanroulette.png in Resources */,
+				3D463E901E5DF7EF000BA47A /* roulette-wheel.gif in Resources */,
 				3DB5F82B1E5DF2A300EE6F44 /* LaunchScreen.storyboard in Resources */,
 				3DB5F8281E5DF2A300EE6F44 /* Assets.xcassets in Resources */,
 				3DB5F8261E5DF2A300EE6F44 /* Main.storyboard in Resources */,
@@ -514,6 +522,7 @@
 				3DB5F8471E5DF2A300EE6F44 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3DB5F8481E5DF2A300EE6F44 /* Build configuration list for PBXNativeTarget "Restaurant-RouletteTests" */ = {
 			isa = XCConfigurationList;
@@ -522,6 +531,7 @@
 				3DB5F84A1E5DF2A300EE6F44 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3DB5F84B1E5DF2A300EE6F44 /* Build configuration list for PBXNativeTarget "Restaurant-RouletteUITests" */ = {
 			isa = XCConfigurationList;
@@ -530,6 +540,7 @@
 				3DB5F84D1E5DF2A300EE6F44 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
