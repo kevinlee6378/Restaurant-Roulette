@@ -20,7 +20,22 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    var isRotating = false
+    
+    @IBAction func spin(_ sender: Any) {
+            let spinAnimation = CABasicAnimation()
+            spinAnimation.fromValue = 0
+            spinAnimation.toValue = M_PI*2
+            spinAnimation.duration = 5
+            spinAnimation.repeatCount = 0
+            spinAnimation.isRemovedOnCompletion = true
+            spinAnimation.fillMode = kCAFillModeForwards
+            spinAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
+            wheel.layer.add(spinAnimation, forKey: "transform.rotation.z")
 
+    }
+/*
     @IBAction func spin(_ sender: Any) {
         position = (position + 700)%360
         UIView.animate(withDuration: 1.0, animations: {
@@ -28,6 +43,8 @@ class ViewController: UIViewController {
         })
         
     }
+ */
+    
 
 }
 
