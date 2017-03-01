@@ -22,13 +22,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="americanroulette.png" translatesAutoresizingMaskIntoConstraints="NO" id="zhT-Hx-ccT">
-                                <rect key="frame" x="67" y="139" width="240" height="128"/>
+                                <rect key="frame" x="19" y="200" width="337" height="282"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0X3-gX-7hI">
-                                <rect key="frame" x="164" y="424" width="46" height="30"/>
+                                <rect key="frame" x="152" y="306" width="70" height="70"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Spin"/>
                                 <connections>
                                     <action selector="spin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9fh-tS-Yhk"/>
                                 </connections>
@@ -37,6 +39,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <connections>
+                        <outlet property="spinButton" destination="0X3-gX-7hI" id="een-Kb-URw"/>
                         <outlet property="wheel" destination="zhT-Hx-ccT" id="Gkd-sR-4h0"/>
                     </connections>
                 </viewController>
