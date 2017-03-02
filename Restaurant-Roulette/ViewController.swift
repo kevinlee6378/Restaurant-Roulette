@@ -9,14 +9,18 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var myCustomView: UIView!
     @IBOutlet weak var chosen: UITextField!
     var options = ["1", "2", "3", "4"]
+    let rect1 = CGRect(x: 195, y: 75, width: 120, height: 100)
     var position = 0.0
+    var option = ""
     var hasFinishedSpinning = true
     @IBOutlet weak var wheel: UIImageView!
     @IBOutlet weak var spinButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        chosen.textAlignment = .center
         print(self.view.center.x.description + " " + self.view.center.y.description)
         wheel.image = textToImage(drawText: "1", inImage: wheel.image!, atPoint: CGPoint(x: 195, y:75))
         wheel.image = textToImage(drawText: "3", inImage: wheel.image!, atPoint: CGPoint(x: 195, y: 320))
@@ -25,6 +29,54 @@ class ViewController: UIViewController {
         wheel.center = self.view.center
         spinButton.center = self.view.center
         spinButton.layer.cornerRadius = 35
+        let button = UIButton(frame: rect1)
+        let x = self.view.center.x
+        let y = self.view.center.y - 90
+        button.center = CGPoint(x: x, y: y)
+        //button.backgroundColor = .black
+        button.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
+
+        self.view.addSubview(button)
+    }
+    
+    func loadCustomViewIntoController()
+    {
+        let xstart = self.view.center.x/4
+        let ystart = self.view.center.y/2
+        let width = self.view.frame.width - 2*xstart
+        let height = self.view.frame.height - 2*ystart
+        myCustomView = UIView(frame: CGRect(x: xstart, y: ystart, width: width, height: height))
+        myCustomView.backgroundColor = .blue
+        self.view.addSubview(myCustomView)
+        
+        myCustomView.isHidden = false
+        
+        let okayButton = UIButton(frame: CGRect(x: xstart, y: ystart + 100, width: 200, height: 50))
+        okayButton.backgroundColor = .yellow
+        okayButton.setTitle("Done", for: .normal)
+        okayButton.setTitleColor(.black, for: .normal)
+        myCustomView.addSubview(okayButton)
+        
+        let label = UILabel(frame: CGRect(x: xstart, y: ystart, width: 200, height: 50))
+        label.textAlignment = .center
+        label.backgroundColor = .white
+        label.text = "Details for option: " + option
+        myCustomView.addSubview(label)
+        
+        okayButton.addTarget(self, action: #selector(self.okButtonImplementation), for:.touchUpInside)
+        
+    }
+    
+    
+    func okButtonImplementation(sender:UIButton){
+        myCustomView.isHidden = true
+    }
+    
+    func showDetails(sender: UIButton!){
+        if(hasFinishedSpinning){
+            print("Show Details")
+            loadCustomViewIntoController()
+        }
     }
 
     func textToImage(drawText text: NSString, inImage image: UIImage, atPoint point: CGPoint) -> UIImage {
@@ -73,9 +125,10 @@ class ViewController: UIViewController {
             wheel.layer.add(spinAnimation, forKey: "transform.rotation.z")
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
                 self.position = spinResult.truncatingRemainder(dividingBy: M_PI*2)
+                self.option = self.chooseBasedOnPosition(atPosition: self.position)
                 self.hasFinishedSpinning = true
                 print(self.position/M_PI)
-                self.chosen.text = self.chooseBasedOnPosition(atPosition: self.position)
+                self.chosen.text = self.option
             }
             
         }
