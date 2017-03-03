@@ -9,11 +9,12 @@
 import UIKit
 
 class ViewController: UIViewController {
+    var baseView: UIView!
     var myCustomView: UIView!
     var buttonArray: [UIButton] = []
     @IBOutlet weak var chosen: UITextField!
     var options = ["1", "2", "3", "4"]
-    let rect1 = CGRect(x: 195, y: 75, width: 120, height: 100)
+    let rect1 = CGRect(x: 195, y: 75, width: 150, height: 100)
     var position = 0.0
     var option = ""
     var optionIndex = 0
@@ -23,8 +24,34 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         wheel.isUserInteractionEnabled = true
-        
+
         chosen.textAlignment = .center
+        
+        loadWheelButtons()
+        loadWheelOptions()
+        spinButton.center = self.view.center
+        spinButton.layer.cornerRadius = 35
+        print(self.view.center.x.description + " " + self.view.center.y.description)
+        let button = UIButton(frame: rect1)
+        let x = self.view.center.x
+        let y = self.view.center.y - 90
+        button.center = CGPoint(x: x, y: y)
+        //button.backgroundColor = .black
+        button.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
+        
+        self.view.addSubview(button)
+        
+    }
+    
+    func loadWheelOptions() {
+        wheel.image = textToImage(drawText: "1", inImage: wheel.image!, atPoint: CGPoint(x: 195, y:75))
+        wheel.image = textToImage(drawText: "3", inImage: wheel.image!, atPoint: CGPoint(x: 195, y: 320))
+        wheel.image = textToImage(drawText: "4", inImage: wheel.image!, atPoint: CGPoint(x: 72.5, y: 197.5))
+        wheel.image = textToImage(drawText: "2", inImage: wheel.image!, atPoint: CGPoint(x: 317.5, y: 197.5))
+        wheel.center = self.view.center
+        
+    }
+    func loadWheelButtons() {
         let shiftx = 90.0
         let shifty = 110.0
         let button1 = UIButton(frame: CGRect(x:195 - shiftx, y: 75 - shifty + 50, width:120, height:50))
@@ -36,7 +63,7 @@ class ViewController: UIViewController {
         button4.setTitle(options[1], for: .normal)
         
         button4.backgroundColor = .blue
-        button4.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
+        button4.addTarget(self, action: #selector(showDetails2), for: .touchUpInside)
         
         buttonArray.append(button4)
         let button2 = UIButton(frame: CGRect(x:195 - shiftx, y: 320 - shifty, width:120, height:50))
@@ -58,17 +85,7 @@ class ViewController: UIViewController {
         }
         hideButtons()
 
-        print(self.view.center.x.description + " " + self.view.center.y.description)
-        wheel.image = textToImage(drawText: "1", inImage: wheel.image!, atPoint: CGPoint(x: 195, y:75))
-        wheel.image = textToImage(drawText: "3", inImage: wheel.image!, atPoint: CGPoint(x: 195, y: 320))
-        wheel.image = textToImage(drawText: "4", inImage: wheel.image!, atPoint: CGPoint(x: 72.5, y: 197.5))
-        wheel.image = textToImage(drawText: "2", inImage: wheel.image!, atPoint: CGPoint(x: 317.5, y: 197.5))
-        wheel.center = self.view.center
-        spinButton.center = self.view.center
-        spinButton.layer.cornerRadius = 35
-        
     }
-    
     func loadCustomViewIntoController()
     {
         let xstart = self.view.center.x/4
@@ -103,6 +120,12 @@ class ViewController: UIViewController {
     }
     
     func showDetails(sender: UIButton!){
+        if(hasFinishedSpinning){
+            print("Show Details")
+            loadCustomViewIntoController()
+        }
+    }
+    func showDetails2(sender: UIButton!){
         if(hasFinishedSpinning){
             print("Show Details")
             loadCustomViewIntoController()
