@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import CoreLocation
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CLLocationManagerDelegate {
     
 
-    
+    var locationManager = CLLocationManager()
+    var latitude: String = ""
+    var longitude: String = ""
     let accessToken = "cvpQEJX1h215Y9TKBauwapUB1FeMVW_KdmO-NOaXYZ0liusAnXlYYGlmnPZknmODwTxi9cdduq_6lH--VxBV34dh5L3DQUuUbIJlAyWSieblnnY1WGxCHfqbTfzTWHYx"
     var baseView: UIView!
     var myCustomView: UIView!
@@ -28,8 +31,19 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //request for authorization
+        //self.locationManager.requestAlwaysAuthorization()
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        //start updating location once authorized
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
+        
         //getAccessToken()
-        makeSearch()
+        //makeSearch(latitude: self.latitude, longitude: self.longitude)
         wheel.isUserInteractionEnabled = true
 
         chosen.textAlignment = .center
@@ -232,8 +246,15 @@ class ViewController: UIViewController {
         }
     }
     
-    func makeSearch() {
-        var request = URLRequest(url: URL(string: ("https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=38.6682&longitude=-90.3325&limit=20"))!)
+    func makeSearch(latitude: String, longitude: String) {
+        var U = "https://api.yelp.com/v3/businesses/search?term=restaurants&latitude="
+        U += latitude
+        U += "&longitude="
+        U += longitude
+        U += "&limit=20"
+        
+       // var request = URLRequest(url: URL(string: ("https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=38.6682&longitude=-90.3325&limit=20"))!)
+        var request = URLRequest(url: URL(string: U)!)
         request.httpMethod = "GET"
         request.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
         
@@ -277,6 +298,13 @@ class ViewController: UIViewController {
             print("responseString = \(responseString)")
         }
         task.resume()
+    }
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
+        self.latitude = String(locValue.latitude)
+        self.longitude = String(locValue.longitude)
+        makeSearch(latitude: self.latitude, longitude: self.longitude)
+
     }
 }
 
