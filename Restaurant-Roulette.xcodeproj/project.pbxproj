@@ -16,6 +16,7 @@
 		3DB5F82B1E5DF2A300EE6F44 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DB5F8291E5DF2A300EE6F44 /* LaunchScreen.storyboard */; };
 		3DB5F8361E5DF2A300EE6F44 /* Restaurant_RouletteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB5F8351E5DF2A300EE6F44 /* Restaurant_RouletteTests.swift */; };
 		3DB5F8411E5DF2A300EE6F44 /* Restaurant_RouletteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB5F8401E5DF2A300EE6F44 /* Restaurant_RouletteUITests.swift */; };
+		3DC398071E843B0A00F9D3AC /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC398061E843B0A00F9D3AC /* SwiftyJSON.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,7 @@
 		3DB5F83C1E5DF2A300EE6F44 /* Restaurant-RouletteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Restaurant-RouletteUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DB5F8401E5DF2A300EE6F44 /* Restaurant_RouletteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Restaurant_RouletteUITests.swift; sourceTree = "<group>"; };
 		3DB5F8421E5DF2A300EE6F44 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3DC398061E843B0A00F9D3AC /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = "../../pollo-ask-around/Pollo Ask Around/SwiftyJSON.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +107,7 @@
 				3DB5F8221E5DF2A300EE6F44 /* ViewController.swift */,
 				3DB5F8241E5DF2A300EE6F44 /* Main.storyboard */,
 				3D463E8F1E5DF7EF000BA47A /* roulette-wheel.gif */,
+				3DC398061E843B0A00F9D3AC /* SwiftyJSON.swift */,
 				3DB5F8271E5DF2A300EE6F44 /* Assets.xcassets */,
 				3DB5F8291E5DF2A300EE6F44 /* LaunchScreen.storyboard */,
 				3D463E911E5DF825000BA47A /* americanroulette.png */,
@@ -270,6 +273,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DC398071E843B0A00F9D3AC /* SwiftyJSON.swift in Sources */,
 				3DB5F8231E5DF2A300EE6F44 /* ViewController.swift in Sources */,
 				3DB5F8211E5DF2A300EE6F44 /* AppDelegate.swift in Sources */,
 			);

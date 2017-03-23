@@ -9,6 +9,10 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+
+    
+    let accessToken = "cvpQEJX1h215Y9TKBauwapUB1FeMVW_KdmO-NOaXYZ0liusAnXlYYGlmnPZknmODwTxi9cdduq_6lH--VxBV34dh5L3DQUuUbIJlAyWSieblnnY1WGxCHfqbTfzTWHYx"
     var baseView: UIView!
     var myCustomView: UIView!
     var buttonArray: [UIButton] = []
@@ -23,6 +27,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var spinButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //getAccessToken()
+        makeSearch()
         wheel.isUserInteractionEnabled = true
 
         chosen.textAlignment = .center
@@ -223,6 +230,53 @@ class ViewController: UIViewController {
         else {
             return options[1]
         }
+    }
+    
+    func makeSearch() {
+        var request = URLRequest(url: URL(string: ("https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=38.6682&longitude=-90.3325&limit=20"))!)
+        request.httpMethod = "GET"
+        request.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
+        
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        let task = session.dataTask(with: request, completionHandler: {(data, response, error) in
+            if(data != nil){
+                let responseString = String(data: data!, encoding: .utf8)
+                print("responseString = \(responseString!)")
+                let jsonResult: JSON = JSON(data: data!)
+                let businesses : [JSON] = jsonResult["businesses"].array!
+                for business in businesses {
+                    print(business["name"].stringValue)
+                }
+                
+            }
+        })
+        task.resume()
+    }
+    func getAccessToken() {
+        let appID = "DRksLe3it7tL8VAQ6oL3tA"
+        let appSecret = "Pc2Jd4Txagz6Sj5ETteAQX2H49FL1nvOGMzb1EM2BZn66A2Y13OrrLh4i9vyZNoD"
+        var request = URLRequest(url: URL(string: "https://api.yelp.com/oauth2/token")!)
+        request.httpMethod = "POST"
+        var postString = "grant_type=client_credentials"
+        postString += "&client_id=" + appID
+        postString += "&client_secret=" + appSecret
+        request.httpBody = postString.data(using: .utf8)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error=\(error)")
+                return
+            }
+            
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(response)")
+            }
+            
+            let responseString = String(data: data, encoding: .utf8)
+            print("responseString = \(responseString)")
+        }
+        task.resume()
     }
 }
 
