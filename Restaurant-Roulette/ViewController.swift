@@ -11,7 +11,7 @@ import CoreLocation
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
     
-
+    var hasSearched = false
     var locationManager = CLLocationManager()
     var latitude: String = ""
     var longitude: String = ""
@@ -30,6 +30,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var spinButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        wheel.isHidden = true
+        spinButton.isHidden = true
+        
         
         //request for authorization
         //self.locationManager.requestAlwaysAuthorization()
@@ -45,11 +48,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         //getAccessToken()
         //makeSearch(latitude: self.latitude, longitude: self.longitude)
         wheel.isUserInteractionEnabled = true
-
         chosen.textAlignment = .center
         
-        loadWheelButtons()
-        loadWheelOptions()
+        //loadWheelButtons()
+        //loadWheelOptions()
         spinButton.center = self.view.center
         spinButton.layer.cornerRadius = 35
         print(self.view.center.x.description + " " + self.view.center.y.description)
@@ -59,16 +61,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         button.center = CGPoint(x: x, y: y)
         //button.backgroundColor = .black
         button.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-        
         self.view.addSubview(button)
         
     }
     
     func loadWheelOptions() {
-        wheel.image = textToImage(drawText: "1", inImage: wheel.image!, atPoint: CGPoint(x: 195, y:75))
-        wheel.image = textToImage(drawText: "3", inImage: wheel.image!, atPoint: CGPoint(x: 195, y: 320))
-        wheel.image = textToImage(drawText: "4", inImage: wheel.image!, atPoint: CGPoint(x: 72.5, y: 197.5))
-        wheel.image = textToImage(drawText: "2", inImage: wheel.image!, atPoint: CGPoint(x: 317.5, y: 197.5))
+        wheel.image = textToImage(drawText: options[0] as NSString, inImage: wheel.image!, atPoint: CGPoint(x: 195, y:75))
+        wheel.image = textToImage(drawText: options[2] as NSString, inImage: wheel.image!, atPoint: CGPoint(x: 195, y: 320))
+        wheel.image = textToImage(drawText: options[3] as NSString, inImage: wheel.image!, atPoint: CGPoint(x: 72.5, y: 197.5))
+        wheel.image = textToImage(drawText: options[1] as NSString, inImage: wheel.image!, atPoint: CGPoint(x: 317.5, y: 197.5))
+
         wheel.center = self.view.center
         
     }
@@ -253,23 +255,35 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         U += longitude
         U += "&limit=20"
         
-       // var request = URLRequest(url: URL(string: ("https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=38.6682&longitude=-90.3325&limit=20"))!)
-        var request = URLRequest(url: URL(string: U)!)
+        var request = URLRequest(url: URL(string: ("https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=38.6682&longitude=-90.3325&limit=20"))!)
+        //var request = URLRequest(url: URL(string: U)!)
         request.httpMethod = "GET"
         request.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
         
         let config = URLSessionConfiguration.default
         let session = URLSession(configuration: config)
         let task = session.dataTask(with: request, completionHandler: {(data, response, error) in
+            DispatchQueue.main.async {
+                
+            
             if(data != nil){
-                let responseString = String(data: data!, encoding: .utf8)
-                print("responseString = \(responseString!)")
+                //let responseString = String(data: data!, encoding: .utf8)
+                //print("responseString = \(responseString!)")
                 let jsonResult: JSON = JSON(data: data!)
                 let businesses : [JSON] = jsonResult["businesses"].array!
+                var i = 0
                 for business in businesses {
                     print(business["name"].stringValue)
+                    if i < 4 {
+                    self.options[i] = business["name"].stringValue
+                    i = i + 1
+                    }
                 }
-                
+                self.loadWheelOptions()
+                self.loadWheelButtons()
+                self.wheel.isHidden = false
+                self.spinButton.isHidden = false
+            }
             }
         })
         task.resume()
@@ -303,8 +317,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         self.latitude = String(locValue.latitude)
         self.longitude = String(locValue.longitude)
-        makeSearch(latitude: self.latitude, longitude: self.longitude)
+        if !hasSearched {
+            self.makeSearch(latitude: self.latitude, longitude: self.longitude)
+            hasSearched = true
+        }
 
     }
+    
 }
+
 
