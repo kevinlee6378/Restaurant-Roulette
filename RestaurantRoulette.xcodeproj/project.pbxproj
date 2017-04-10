@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D86E17E1E9BE6DB006002C8 /* LocationSearchTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D86E17C1E9BE6DB006002C8 /* LocationSearchTable.swift */; };
+		3D86E17F1E9BE6DB006002C8 /* LocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D86E17D1E9BE6DB006002C8 /* LocationViewController.swift */; };
 		3D8DE64F1E9BE2050024FF3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8DE64E1E9BE2050024FF3C /* AppDelegate.swift */; };
 		3D8DE6541E9BE2050024FF3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D8DE6521E9BE2050024FF3C /* Main.storyboard */; };
 		3D8DE6561E9BE2050024FF3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D8DE6551E9BE2050024FF3C /* Assets.xcassets */; };
@@ -37,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3D86E17C1E9BE6DB006002C8 /* LocationSearchTable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationSearchTable.swift; path = ../../../Downloads/location/location/LocationSearchTable.swift; sourceTree = "<group>"; };
+		3D86E17D1E9BE6DB006002C8 /* LocationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LocationViewController.swift; path = ../../../Downloads/location/location/LocationViewController.swift; sourceTree = "<group>"; };
 		3D8DE64B1E9BE2050024FF3C /* RestaurantRoulette.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RestaurantRoulette.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D8DE64E1E9BE2050024FF3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3D8DE6531E9BE2050024FF3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 		3D8DE64D1E9BE2050024FF3C /* RestaurantRoulette */ = {
 			isa = PBXGroup;
 			children = (
+				3D86E17C1E9BE6DB006002C8 /* LocationSearchTable.swift */,
+				3D86E17D1E9BE6DB006002C8 /* LocationViewController.swift */,
 				3D8DE67C1E9BE22C0024FF3C /* MenuViewController.swift */,
 				3D8DE67D1E9BE22C0024FF3C /* SwiftyJSON.swift */,
 				3D8DE67E1E9BE22C0024FF3C /* ViewController.swift */,
@@ -274,6 +280,8 @@
 				3D8DE6821E9BE22C0024FF3C /* ViewController.swift in Sources */,
 				3D8DE6831E9BE22C0024FF3C /* WheelViewController.swift in Sources */,
 				3D8DE6801E9BE22C0024FF3C /* MenuViewController.swift in Sources */,
+				3D86E17E1E9BE6DB006002C8 /* LocationSearchTable.swift in Sources */,
+				3D86E17F1E9BE6DB006002C8 /* LocationViewController.swift in Sources */,
 				3D8DE64F1E9BE2050024FF3C /* AppDelegate.swift in Sources */,
 				3D8DE6811E9BE22C0024FF3C /* SwiftyJSON.swift in Sources */,
 			);
@@ -526,6 +534,7 @@
 				3D8DE6751E9BE2050024FF3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3D8DE6761E9BE2050024FF3C /* Build configuration list for PBXNativeTarget "RestaurantRouletteTests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +543,7 @@
 				3D8DE6781E9BE2050024FF3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3D8DE6791E9BE2050024FF3C /* Build configuration list for PBXNativeTarget "RestaurantRouletteUITests" */ = {
 			isa = XCConfigurationList;
@@ -542,6 +552,7 @@
 				3D8DE67B1E9BE2050024FF3C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
