@@ -4,7 +4,7 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Restaurant-Roulette.xcscheme</key>
+		<key>RestaurantRoulette.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
 			<integer>0</integer>
@@ -12,17 +12,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3DB5F81C1E5DF2A300EE6F44</key>
+		<key>3D8DE64A1E9BE2040024FF3C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3DB5F8301E5DF2A300EE6F44</key>
+		<key>3D8DE65E1E9BE2050024FF3C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3DB5F83B1E5DF2A300EE6F44</key>
+		<key>3D8DE6691E9BE2050024FF3C</key>
 		<dict>
 			<key>primary</key>
 			<true/>

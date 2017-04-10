@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  Restaurant-Roulette
+//  RestaurantRoulette
 //
-//  Created by Kevin Lee on 2/22/17.
+//  Created by Kevin Lee on 4/10/17.
 //  Copyright © 2017 Kevin Lee. All rights reserved.
 //
 

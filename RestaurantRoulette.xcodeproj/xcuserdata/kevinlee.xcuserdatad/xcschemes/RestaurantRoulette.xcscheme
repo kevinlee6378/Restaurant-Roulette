@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3DB5F81C1E5DF2A300EE6F44"
-               BuildableName = "Restaurant-Roulette.app"
-               BlueprintName = "Restaurant-Roulette"
-               ReferencedContainer = "container:Restaurant-Roulette.xcodeproj">
+               BlueprintIdentifier = "3D8DE64A1E9BE2040024FF3C"
+               BuildableName = "RestaurantRoulette.app"
+               BlueprintName = "RestaurantRoulette"
+               ReferencedContainer = "container:RestaurantRoulette.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,30 +32,30 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3DB5F8301E5DF2A300EE6F44"
-               BuildableName = "Restaurant-RouletteTests.xctest"
-               BlueprintName = "Restaurant-RouletteTests"
-               ReferencedContainer = "container:Restaurant-Roulette.xcodeproj">
+               BlueprintIdentifier = "3D8DE65E1E9BE2050024FF3C"
+               BuildableName = "RestaurantRouletteTests.xctest"
+               BlueprintName = "RestaurantRouletteTests"
+               ReferencedContainer = "container:RestaurantRoulette.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3DB5F83B1E5DF2A300EE6F44"
-               BuildableName = "Restaurant-RouletteUITests.xctest"
-               BlueprintName = "Restaurant-RouletteUITests"
-               ReferencedContainer = "container:Restaurant-Roulette.xcodeproj">
+               BlueprintIdentifier = "3D8DE6691E9BE2050024FF3C"
+               BuildableName = "RestaurantRouletteUITests.xctest"
+               BlueprintName = "RestaurantRouletteUITests"
+               ReferencedContainer = "container:RestaurantRoulette.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3DB5F81C1E5DF2A300EE6F44"
-            BuildableName = "Restaurant-Roulette.app"
-            BlueprintName = "Restaurant-Roulette"
-            ReferencedContainer = "container:Restaurant-Roulette.xcodeproj">
+            BlueprintIdentifier = "3D8DE64A1E9BE2040024FF3C"
+            BuildableName = "RestaurantRoulette.app"
+            BlueprintName = "RestaurantRoulette"
+            ReferencedContainer = "container:RestaurantRoulette.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -75,10 +75,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3DB5F81C1E5DF2A300EE6F44"
-            BuildableName = "Restaurant-Roulette.app"
-            BlueprintName = "Restaurant-Roulette"
-            ReferencedContainer = "container:Restaurant-Roulette.xcodeproj">
+            BlueprintIdentifier = "3D8DE64A1E9BE2040024FF3C"
+            BuildableName = "RestaurantRoulette.app"
+            BlueprintName = "RestaurantRoulette"
+            ReferencedContainer = "container:RestaurantRoulette.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -94,10 +94,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3DB5F81C1E5DF2A300EE6F44"
-            BuildableName = "Restaurant-Roulette.app"
-            BlueprintName = "Restaurant-Roulette"
-            ReferencedContainer = "container:Restaurant-Roulette.xcodeproj">
+            BlueprintIdentifier = "3D8DE64A1E9BE2040024FF3C"
+            BuildableName = "RestaurantRoulette.app"
+            BlueprintName = "RestaurantRoulette"
+            ReferencedContainer = "container:RestaurantRoulette.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

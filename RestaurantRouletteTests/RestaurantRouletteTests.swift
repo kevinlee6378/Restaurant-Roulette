@@ -1,15 +1,15 @@
 //
-//  Restaurant_RouletteTests.swift
-//  Restaurant-RouletteTests
+//  RestaurantRouletteTests.swift
+//  RestaurantRouletteTests
 //
-//  Created by Kevin Lee on 2/22/17.
+//  Created by Kevin Lee on 4/10/17.
 //  Copyright © 2017 Kevin Lee. All rights reserved.
 //
 
 import XCTest
-@testable import Restaurant_Roulette
+@testable import RestaurantRoulette
 
-class Restaurant_RouletteTests: XCTestCase {
+class RestaurantRouletteTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
