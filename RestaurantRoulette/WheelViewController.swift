@@ -34,7 +34,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        makeSearch(latitude: latitude, longitude: longitude)
         setupWheel()
         setupSpinBUtton()
         setupChosen()
@@ -48,11 +48,13 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         self.locationManager.requestWhenInUseAuthorization()
         
         //start updating location once authorized
+        
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
             locationManager.startUpdatingLocation()
         }
+        
         
         //getAccessToken()
         //makeSearch(latitude: self.latitude, longitude: self.longitude)
@@ -177,7 +179,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
             wheel.addSubview(button)
         }
         hideButtons()
-
+        
     }
     func loadCustomViewIntoController()
     {
@@ -224,7 +226,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
             loadCustomViewIntoController()
         }
     }
-
+    
     func textToImage(drawText text: NSString, inImage image: UIImage, atPoint point: CGPoint) -> UIImage {
         let textColor = UIColor.white
         let textFont = UIFont(name: "Helvetica Bold", size: 12)!
@@ -283,7 +285,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
             }
             
         }
-
+        
     }
     func hideButtons() {
         for button in self.buttonArray{
@@ -336,26 +338,26 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         let task = session.dataTask(with: request, completionHandler: {(data, response, error) in
             DispatchQueue.main.async {
                 
-            
-            if(data != nil){
-                //let responseString = String(data: data!, encoding: .utf8)
-                //print("responseString = \(responseString!)")
-                let jsonResult: JSON = JSON(data: data!)
-                let businesses : [JSON] = jsonResult["businesses"].array!
-                var i = 0
-                for business in businesses {
-                    print(business["name"].stringValue)
-                    if i < 4 {
-                    self.options[i] = business["name"].stringValue
-                    i = i + 1
-                    }
-                }
-                self.loadWheelOptions()
-                self.loadWheelButtons()
-                self.wheel.isHidden = false
-                self.spinButton.isHidden = false
                 
-            }
+                if(data != nil){
+                    //let responseString = String(data: data!, encoding: .utf8)
+                    //print("responseString = \(responseString!)")
+                    let jsonResult: JSON = JSON(data: data!)
+                    let businesses : [JSON] = jsonResult["businesses"].array!
+                    var i = 0
+                    for business in businesses {
+                        print(business["name"].stringValue)
+                        if i < 4 {
+                            self.options[i] = business["name"].stringValue
+                            i = i + 1
+                        }
+                    }
+                    self.loadWheelOptions()
+                    self.loadWheelButtons()
+                    self.wheel.isHidden = false
+                    self.spinButton.isHidden = false
+                    
+                }
             }
         })
         task.resume()
@@ -385,6 +387,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         }
         task.resume()
     }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         self.latitude = String(locValue.latitude)
@@ -393,7 +396,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
             self.makeSearch(latitude: self.latitude, longitude: self.longitude)
             hasSearched = true
         }
-
+        
     }
     
 }

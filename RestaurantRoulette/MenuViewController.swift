@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import MapKit
 
 class MenuViewController: UIViewController {
     var buttonArray: [UIButton] = [UIButton]()
     var viewsArray: [UIViewController] = [UIViewController]()
-    
+    var latitude: String?
+    var longitude: String?
     var locButton: UIButton!
     var prefButton: UIButton!
     var wheelButton: UIButton!
@@ -68,7 +70,7 @@ class MenuViewController: UIViewController {
     
     func addDummyViews() {
         
-        let dummyController1 = UIViewController()
+        let dummyController1 = LocationViewController()
         dummyController1.view.backgroundColor = UIColor.red
         self.viewsArray.append(dummyController1)
         
@@ -79,7 +81,10 @@ class MenuViewController: UIViewController {
         let dummyController3 = WheelViewController()
         //dummyController3.view.backgroundColor = UIColor.blue
         self.viewsArray.append(dummyController3)
-
+        
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        //print(longitude! + " " + latitude!)
     }
     
 }
