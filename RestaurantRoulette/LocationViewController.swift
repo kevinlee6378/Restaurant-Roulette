@@ -55,6 +55,7 @@ class LocationViewController : UIViewController {
         mapView.isZoomEnabled = true
         mapView.isScrollEnabled = true
         self.view.addSubview(self.mapView)
+        mapView.showsUserLocation = true
     }
     
     func setupTableView() {

@@ -74,7 +74,7 @@ class MenuViewController: UIViewController {
         dummyController1.view.backgroundColor = UIColor.red
         self.viewsArray.append(dummyController1)
         
-        let dummyController2 = UIViewController()
+        let dummyController2 = PreferencesViewController()
         dummyController2.view.backgroundColor = UIColor.white
         self.viewsArray.append(dummyController2)
         

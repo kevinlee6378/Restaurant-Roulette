@@ -19,6 +19,7 @@
 		3D8DE6591E9BE2050024FF3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D8DE6571E9BE2050024FF3C /* LaunchScreen.storyboard */; };
 		3D8DE6641E9BE2050024FF3C /* RestaurantRouletteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8DE6631E9BE2050024FF3C /* RestaurantRouletteTests.swift */; };
 		3D8DE66F1E9BE2050024FF3C /* RestaurantRouletteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8DE66E1E9BE2050024FF3C /* RestaurantRouletteUITests.swift */; };
+		686B3B3D1EA01C19007F1EF3 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686B3B3C1EA01C19007F1EF3 /* PreferencesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		3D8DE66A1E9BE2050024FF3C /* RestaurantRouletteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RestaurantRouletteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D8DE66E1E9BE2050024FF3C /* RestaurantRouletteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantRouletteUITests.swift; sourceTree = "<group>"; };
 		3D8DE6701E9BE2050024FF3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		686B3B3C1EA01C19007F1EF3 /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +120,7 @@
 				3D710F271EA00EC70079595B /* MenuViewController.swift */,
 				3D710F291EA00EE30079595B /* ViewController.swift */,
 				3D710F2B1EA00F030079595B /* WheelViewController.swift */,
+				686B3B3C1EA01C19007F1EF3 /* PreferencesViewController.swift */,
 			);
 			path = RestaurantRoulette;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 				3D710F2A1EA00EE30079595B /* ViewController.swift in Sources */,
 				3D710F241EA00D8E0079595B /* LocationViewController.swift in Sources */,
 				3D710F281EA00EC70079595B /* MenuViewController.swift in Sources */,
+				686B3B3D1EA01C19007F1EF3 /* PreferencesViewController.swift in Sources */,
 				3D710F221EA00D7C0079595B /* LocationSearchTable.swift in Sources */,
 				3D8DE64F1E9BE2050024FF3C /* AppDelegate.swift in Sources */,
 				3D710F2C1EA00F030079595B /* WheelViewController.swift in Sources */,
