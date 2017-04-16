@@ -51,11 +51,11 @@ class LocationViewController : UIViewController {
     
     func setupMapView() {
         self.mapView = MKMapView()
-        mapView.frame = self.view.frame
-        mapView.isZoomEnabled = true
-        mapView.isScrollEnabled = true
+        self.mapView.frame = self.view.frame
+        self.mapView.isZoomEnabled = true
+        self.mapView.isScrollEnabled = true
         self.view.addSubview(self.mapView)
-        mapView.showsUserLocation = true
+        //mapView.showsUserLocation = true
     }
     
     func setupTableView() {

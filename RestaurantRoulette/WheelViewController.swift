@@ -140,47 +140,51 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     func loadWheelOptions() {
-        wheel.image = textToImage(drawText: options[0] as NSString, inImage: wheel.image!, atPoint: CGPoint(x: 100, y:100))
-        wheel.image = textToImage(drawText: options[1] as NSString, inImage: wheel.image!, atPoint: CGPoint(x: 300, y: 100))
-        wheel.image = textToImage(drawText: options[2] as NSString, inImage: wheel.image!, atPoint: CGPoint(x: 300, y: 300))
-        wheel.image = textToImage(drawText: options[3] as NSString, inImage: wheel.image!, atPoint: CGPoint(x: 100, y: 300))
+
+        textToImage(drawText: options[0] as NSString, inImage: wheel, atPoint: CGPoint(x: 200 - 100, y: 200 - 100), withAngle: CGFloat(M_PI_4 * Double(7)))
+        textToImage(drawText: options[1] as NSString, inImage: wheel, atPoint: CGPoint(x: 200 + 100, y: 200 - 100), withAngle:
+            CGFloat(M_PI_4))
+        textToImage(drawText: options[2] as NSString, inImage: wheel, atPoint: CGPoint(x: 200 + 100, y: 200 + 100), withAngle:
+            CGFloat(M_PI_4 * Double(3)))
+        textToImage(drawText: options[3] as NSString, inImage: wheel, atPoint: CGPoint(x: 200 - 100, y: 200 + 100), withAngle:
+            CGFloat(M_PI_4 * Double(5)))
         
     }
-    func loadWheelButtons() {
-        let shiftx = 90.0
-        let shifty = 110.0
-        let button1 = UIButton(frame: CGRect(x:195 - shiftx, y: 75 - shifty + 50, width:120, height:50))
-        button1.setTitle(options[0], for: .normal)
-        button1.backgroundColor = .black
-        button1.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-        buttonArray.append(button1)
-        let button4 = UIButton(frame: CGRect(x:317.5 - shiftx, y: 197.5 - shifty, width:60, height:100))
-        button4.setTitle(options[1], for: .normal)
-        
-        button4.backgroundColor = .blue
-        button4.addTarget(self, action: #selector(showDetails2), for: .touchUpInside)
-        
-        buttonArray.append(button4)
-        let button2 = UIButton(frame: CGRect(x:195 - shiftx, y: 320 - shifty, width:120, height:50))
-        button2.backgroundColor = .yellow
-        button2.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-        
-        button2.setTitle(options[2], for: .normal)
-        
-        buttonArray.append(button2)
-        let button3 = UIButton(frame: CGRect(x:72.5 - shiftx + 60, y: 197.5 - shifty, width:60, height:100))
-        button3.backgroundColor = .red
-        button3.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-        button3.setTitle(options[3], for: .normal)
-        
-        buttonArray.append(button3)
-        
-        for button in buttonArray{
-            wheel.addSubview(button)
-        }
-        hideButtons()
-        
-    }
+//    func loadWheelButtons() {
+//        let shiftx = 90.0
+//        let shifty = 110.0
+//        let button1 = UIButton(frame: CGRect(x:195 - shiftx, y: 75 - shifty + 50, width:120, height:50))
+//        button1.setTitle(options[0], for: .normal)
+//        button1.backgroundColor = .black
+//        button1.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
+//        buttonArray.append(button1)
+//        let button4 = UIButton(frame: CGRect(x:317.5 - shiftx, y: 197.5 - shifty, width:60, height:100))
+//        button4.setTitle(options[1], for: .normal)
+//        
+//        button4.backgroundColor = .blue
+//        button4.addTarget(self, action: #selector(showDetails2), for: .touchUpInside)
+//        
+//        buttonArray.append(button4)
+//        let button2 = UIButton(frame: CGRect(x:195 - shiftx, y: 320 - shifty, width:120, height:50))
+//        button2.backgroundColor = .yellow
+//        button2.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
+//        
+//        button2.setTitle(options[2], for: .normal)
+//        
+//        buttonArray.append(button2)
+//        let button3 = UIButton(frame: CGRect(x:72.5 - shiftx + 60, y: 197.5 - shifty, width:60, height:100))
+//        button3.backgroundColor = .red
+//        button3.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
+//        button3.setTitle(options[3], for: .normal)
+//        
+//        buttonArray.append(button3)
+//        
+//        for button in buttonArray{
+//            wheel.addSubview(button)
+//        }
+//        hideButtons()
+//        
+//    }
     func loadCustomViewIntoController()
     {
         let xstart = self.view.center.x/4
@@ -227,26 +231,38 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    func textToImage(drawText text: NSString, inImage image: UIImage, atPoint point: CGPoint) -> UIImage {
-        let textColor = UIColor.white
-        let textFont = UIFont(name: "Helvetica Bold", size: 12)!
+    func textToImage(drawText text: NSString, inImage imageView: UIImageView, atPoint point: CGPoint, withAngle angle: CGFloat) {
+        let textView = UILabel()
+        textView.backgroundColor = UIColor.clear
+        textView.textAlignment = .center
+        textView.numberOfLines = 3
+        textView.text = text as String
+        textView.frame = CGRect(x: point.x - 100, y: point.y - 100, width: 200, height: 200)
+        print(textView.frame)
+        //var transform = CGAffineTransform(translationX: 150, y: 92)
+        var transform = CGAffineTransform(rotationAngle:angle)
+        textView.transform = transform
+        imageView.addSubview(textView)
         
-        let scale = UIScreen.main.scale
-        UIGraphicsBeginImageContextWithOptions(image.size, false, scale)
-        
-        let textFontAttributes = [
-            NSFontAttributeName: textFont,
-            NSForegroundColorAttributeName: textColor,
-            ] as [String : Any]
-        image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
-        
-        let rect = CGRect(origin: point, size: image.size)
-        text.draw(in: rect, withAttributes: textFontAttributes)
-        
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
+//        let textColor = UIColor.white
+//        let textFont = UIFont(name: "Helvetica Bold", size: 12)!
+//        
+//        let scale = UIScreen.main.scale
+//        UIGraphicsBeginImageContextWithOptions(image.size, false, scale)
+//        
+//        let textFontAttributes = [
+//            NSFontAttributeName: textFont,
+//            NSForegroundColorAttributeName: textColor,
+//            ] as [String : Any]
+//        image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
+//        
+//        let rect = CGRect(origin: point, size: image.size)
+//        text.draw(in: rect, withAttributes: textFontAttributes)
+//        
+//        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+//        UIGraphicsEndImageContext()
+//        
+//        return newImage!
     }
     
     override func didReceiveMemoryWarning() {
@@ -256,7 +272,8 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
     
     func spin(_ sender: Any) {
         if (hasFinishedSpinning){
-            hideButtons()
+            //hideButtons()
+            hideWedges()
             hasFinishedSpinning = false
             var spinResult = M_PI*4*(Double(arc4random())/0xFFFFFFFF) + M_PI*2
             if ((spinResult - position) < M_PI*2){
@@ -279,7 +296,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
                 print(self.position/M_PI)
                 self.chosen.text = self.option
                 self.optionIndex = self.chooseIndexBasedOnPosition(atPosition: self.position)
-                self.buttonArray[self.optionIndex].isHidden = false
+                //self.buttonArray[self.optionIndex].isHidden = false
                 print(self.optionIndex)
                 self.wedges[self.optionIndex].isHidden = false
             }
@@ -290,6 +307,11 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
     func hideButtons() {
         for button in self.buttonArray{
             button.isHidden = true
+        }
+    }
+    func hideWedges() {
+        for wedge in self.wedges {
+            wedge.isHidden = true
         }
     }
     func chooseIndexBasedOnPosition(atPosition pos: Double) -> Int {
@@ -307,18 +329,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     func chooseBasedOnPosition(atPosition pos: Double) -> String{
-        if (pos <= M_PI_4 || pos > 7*M_PI_4){
-            return options[0]
-        }
-        else if (pos <= 3*M_PI_4 && pos > M_PI_4) {
-            return options[3]
-        }
-        else if (pos <= 5*M_PI_4 && pos > 3*M_PI_4){
-            return options[2]
-        }
-        else {
-            return options[1]
-        }
+        return options[chooseIndexBasedOnPosition(atPosition: pos)]
     }
     
     func makeSearch(latitude: String, longitude: String) {
@@ -353,7 +364,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
                         }
                     }
                     self.loadWheelOptions()
-                    self.loadWheelButtons()
+                    //self.loadWheelButtons()
                     self.wheel.isHidden = false
                     self.spinButton.isHidden = false
                     

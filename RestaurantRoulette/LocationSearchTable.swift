@@ -19,6 +19,7 @@ class LocationSearchTable: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
+        
     }
     
     func parseAddress(_ selectedItem:MKPlacemark) -> String {
@@ -72,6 +73,7 @@ extension LocationSearchTable : UISearchResultsUpdating {
             self.matchingItems = response.mapItems
             self.tableView.reloadData()
         }
+
         
         let request = MKLocalSearchRequest()
         request.naturalLanguageQuery = searchBarText
@@ -99,7 +101,7 @@ extension LocationSearchTable {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if ((indexPath as NSIndexPath).row == 0) {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath as IndexPath)
+            let cell = UITableViewCell(style: UITableViewCellStyle.subtitle, reuseIdentifier: "Cell")
             let selectedItem = matchingItems[(indexPath as NSIndexPath).row].placemark
             cell.textLabel?.text = "My Location"
             cell.detailTextLabel?.text = parseAddress(selectedItem)

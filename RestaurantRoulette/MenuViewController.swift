@@ -40,15 +40,15 @@ class MenuViewController: UIViewController {
         let x = (self.view.frame.width - width) / 2
         
         self.locButton = UIButton()
-        self.locButton.setTitle("LOCATION", for: UIControlState.normal)
+        self.locButton.setTitle("Choose your location", for: UIControlState.normal)
         self.buttonArray.append(self.locButton)
         
         self.prefButton = UIButton()
-        self.prefButton.setTitle("PREFERENCES", for: UIControlState.normal)
+        self.prefButton.setTitle("Pick your preferences", for: UIControlState.normal)
         self.buttonArray.append(self.prefButton)
         
         self.wheelButton = UIButton()
-        self.wheelButton.setTitle("WHEEL", for: UIControlState.normal)
+        self.wheelButton.setTitle("Find a restaurant", for: UIControlState.normal)
         self.buttonArray.append(self.wheelButton)
         
         var buttonIndex = 0
@@ -83,8 +83,30 @@ class MenuViewController: UIViewController {
         self.viewsArray.append(dummyController3)
         
     }
+    
+    func disableButton(button:UIButton) {
+        button.isUserInteractionEnabled = false
+        button.titleLabel?.textColor = UIColor.black.withAlphaComponent(0.5)
+    }
+    
+    func enableButton(button:UIButton) {
+        button.isUserInteractionEnabled = true
+        button.titleLabel?.textColor = UIColor.black.withAlphaComponent(1)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         //print(longitude! + " " + latitude!)
+        if let longitude = self.longitude {
+            if let latitude = self.latitude {
+                print(longitude + " " + latitude)
+                enableButton(button: self.wheelButton)
+                enableButton(button: self.prefButton)
+            }
+        } else {
+            disableButton(button: self.wheelButton)
+            disableButton(button: self.prefButton)
+        }
+        
     }
     
 }
