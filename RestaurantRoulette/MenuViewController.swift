@@ -35,7 +35,7 @@ class MenuViewController: UIViewController {
         
         let width = CGFloat(200)
         let height = CGFloat(50)
-        let padding = CGFloat(50)
+        let padding = CGFloat(self.view.frame.height / 20)
         var currY = self.view.frame.height / 2
         let x = (self.view.frame.width - width) / 2
         
