@@ -19,6 +19,8 @@
 		3D8DE6591E9BE2050024FF3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D8DE6571E9BE2050024FF3C /* LaunchScreen.storyboard */; };
 		3D8DE6641E9BE2050024FF3C /* RestaurantRouletteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8DE6631E9BE2050024FF3C /* RestaurantRouletteTests.swift */; };
 		3D8DE66F1E9BE2050024FF3C /* RestaurantRouletteUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D8DE66E1E9BE2050024FF3C /* RestaurantRouletteUITests.swift */; };
+		6846558B1EA41F600020440B /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684655891EA41F600020440B /* PopUpViewController.swift */; };
+		6846558C1EA41F600020440B /* PopUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6846558A1EA41F600020440B /* PopUpViewController.xib */; };
 		686B3B3D1EA01C19007F1EF3 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686B3B3C1EA01C19007F1EF3 /* PreferencesViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +60,8 @@
 		3D8DE66A1E9BE2050024FF3C /* RestaurantRouletteUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RestaurantRouletteUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D8DE66E1E9BE2050024FF3C /* RestaurantRouletteUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantRouletteUITests.swift; sourceTree = "<group>"; };
 		3D8DE6701E9BE2050024FF3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		684655891EA41F600020440B /* PopUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
+		6846558A1EA41F600020440B /* PopUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpViewController.xib; sourceTree = "<group>"; };
 		686B3B3C1EA01C19007F1EF3 /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -121,6 +125,8 @@
 				3D710F291EA00EE30079595B /* ViewController.swift */,
 				3D710F2B1EA00F030079595B /* WheelViewController.swift */,
 				686B3B3C1EA01C19007F1EF3 /* PreferencesViewController.swift */,
+				684655891EA41F600020440B /* PopUpViewController.swift */,
+				6846558A1EA41F600020440B /* PopUpViewController.xib */,
 			);
 			path = RestaurantRoulette;
 			sourceTree = "<group>";
@@ -256,6 +262,7 @@
 				3D8DE6591E9BE2050024FF3C /* LaunchScreen.storyboard in Resources */,
 				3D8DE6561E9BE2050024FF3C /* Assets.xcassets in Resources */,
 				3D8DE6541E9BE2050024FF3C /* Main.storyboard in Resources */,
+				6846558C1EA41F600020440B /* PopUpViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +294,7 @@
 				3D710F221EA00D7C0079595B /* LocationSearchTable.swift in Sources */,
 				3D8DE64F1E9BE2050024FF3C /* AppDelegate.swift in Sources */,
 				3D710F2C1EA00F030079595B /* WheelViewController.swift in Sources */,
+				6846558B1EA41F600020440B /* PopUpViewController.swift in Sources */,
 				3D710F261EA00E9D0079595B /* SwiftyJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -221,15 +221,17 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
     func showDetails(sender: UIButton!){
         if(hasFinishedSpinning){
             print("Show Details")
-            loadCustomViewIntoController()
+            showPopUp()
+            //loadCustomViewIntoController()
         }
     }
-    func showDetails2(sender: UIButton!){
+    
+    /*func showDetails2(sender: UIButton!){
         if(hasFinishedSpinning){
             print("Show Details")
             loadCustomViewIntoController()
         }
-    }
+    }*/
     
     func textToImage(drawText text: NSString, inImage imageView: UIImageView, atPoint point: CGPoint, withAngle angle: CGFloat) {
         let textView = UILabel()
@@ -408,6 +410,32 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
             hasSearched = true
         }
         
+    }
+    func getframeheight() -> CGFloat {
+        return view.frame.size.height
+    }
+    
+    func getframewidth() -> CGFloat {
+        return view.frame.size.width
+    }
+    
+    
+    var popViewController : PopUpViewController!
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+    }
+    
+    
+    func showPopUp() {
+        let bundle = Bundle(for: PopUpViewController.self)
+        self.popViewController = PopUpViewController(nibName: "PopUpViewController", bundle: bundle)
+        self.popViewController.title = "This is a popup view"
+        self.popViewController.showInView(self.view, withImage: UIImage(named: "typpzDemo"), withMessage: "You just triggered a great popup window", animated: true)
     }
     
 }
