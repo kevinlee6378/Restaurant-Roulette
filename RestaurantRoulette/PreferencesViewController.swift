@@ -13,22 +13,43 @@ class PreferencesViewController: UIViewController {
     var ratingLabel: UILabel!
     var ratingStarsImageView: UIImageView!
     var ratingStarsImages: [UIImage] = []
-    var minRatings = 3
+    var minRatings = 3 {
+        didSet{
+            pushToMVC()
+        }
+    }
     
     var radiusLabel: UILabel!
     var radiusSlider: UISlider!
-    var searchRadius = 5.0
+    var searchRadius = 5.0 {
+        didSet{
+            pushToMVC()
+        }
+    }
     
     var priceLabel: UILabel!
     var priceImageViews: [UIImageView] = []
     var priceImages: [UIImage] = []
-    var onePriceTapped = true;
-    var twoPriceTapped = true;
-    var threePriceTapped = false;
-    var fourPriceTapped = false;
-    
-    
-
+    var onePriceTapped = true {
+        didSet{
+            pushToMVC()
+        }
+    }
+    var twoPriceTapped = true {
+        didSet{
+            pushToMVC()
+        }
+    }
+    var threePriceTapped = false {
+        didSet{
+            pushToMVC()
+        }
+    }
+    var fourPriceTapped = false{
+        didSet{
+            pushToMVC()
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +65,17 @@ class PreferencesViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func pushToMVC(){
+        let count = self.navigationController?.viewControllers.count;
+        let menuVC = self.navigationController?.viewControllers[count!-2] as! MenuViewController
+        menuVC.minRatings = self.minRatings
+        menuVC.searchRadius = self.searchRadius
+        menuVC.prices[0] = self.onePriceTapped
+        menuVC.prices[1] = self.twoPriceTapped
+        menuVC.prices[2] = self.threePriceTapped
+        menuVC.prices[3] = self.fourPriceTapped
     }
     
     func setupRating() {

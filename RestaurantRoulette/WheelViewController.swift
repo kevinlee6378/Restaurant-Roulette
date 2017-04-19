@@ -8,14 +8,16 @@
 
 import UIKit
 import CoreLocation
-import SpriteKit
 
-class WheelViewController: UIViewController, CLLocationManagerDelegate {
+class WheelViewController: UIViewController {
     
-    var hasSearched = false
-    var locationManager = CLLocationManager()
+    //var hasSearched = false
+   // var locationManager = CLLocationManager()
     var latitude: String = ""
     var longitude: String = ""
+    var searchRadius = 0
+    var minRating = 0
+    var prices: [Bool] = []
     let accessToken = "cvpQEJX1h215Y9TKBauwapUB1FeMVW_KdmO-NOaXYZ0liusAnXlYYGlmnPZknmODwTxi9cdduq_6lH--VxBV34dh5L3DQUuUbIJlAyWSieblnnY1WGxCHfqbTfzTWHYx"
     var baseView: UIView!
     var myCustomView: UIView!
@@ -34,7 +36,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeSearch(latitude: latitude, longitude: longitude)
+        makeSearch(latitude: self.latitude, longitude: self.longitude, radius: self.searchRadius, prices: self.prices, rating: self.minRating)
         setupWheel()
         setupSpinBUtton()
         setupChosen()
@@ -42,7 +44,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         wheel.isHidden = true
         spinButton.isHidden = true
         
-        
+        /*
         //request for authorization
         //self.locationManager.requestAlwaysAuthorization()
         self.locationManager.requestWhenInUseAuthorization()
@@ -55,7 +57,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
             locationManager.startUpdatingLocation()
         }
         
-        
+        */
         //getAccessToken()
         //makeSearch(latitude: self.latitude, longitude: self.longitude)
         wheel.isUserInteractionEnabled = true
@@ -64,7 +66,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         //loadWheelButtons()
         //loadWheelOptions()
         spinButton.layer.cornerRadius = 50
-        print(self.view.center.x.description + " " + self.view.center.y.description)
+        //print(self.view.center.x.description + " " + self.view.center.y.description)
         let button = UIButton(frame: rect1)
         let x = self.view.center.x
         let y = self.view.center.y - 90
@@ -334,15 +336,36 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         return options[chooseIndexBasedOnPosition(atPosition: pos)]
     }
     
-    func makeSearch(latitude: String, longitude: String) {
+    func makeSearch(latitude: String, longitude: String, radius: Int, prices: [Bool], rating: Int) {
         var U = "https://api.yelp.com/v3/businesses/search?term=restaurants&latitude="
         U += latitude
         U += "&longitude="
         U += longitude
         U += "&limit=20"
-        
-        var request = URLRequest(url: URL(string: ("https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=38.6682&longitude=-90.3325&limit=20"))!)
-        //var request = URLRequest(url: URL(string: U)!)
+        U += "&radius="
+        U += String(radius)
+        print(U)
+        U += "&price="
+        var hasSetFirst = false
+        var priceQuery = ""
+        for index in 0...3{
+            if !hasSetFirst {
+                if prices[index] {
+                    priceQuery.append(String(index+1))
+                    hasSetFirst = true
+                }
+            }
+            else {
+                if prices[index] {
+                    priceQuery.append("," + String(index+1))
+                }
+            }
+        }
+        print(priceQuery)
+        U += priceQuery
+        print(U)
+        //var request = URLRequest(url: URL(string: ("https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=38.6682&longitude=-90.3325&limit=20"))!)
+        var request = URLRequest(url: URL(string: U)!)
         request.httpMethod = "GET"
         request.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
         
@@ -353,22 +376,25 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
                 
                 
                 if(data != nil){
-                    //let responseString = String(data: data!, encoding: .utf8)
-                    //print("responseString = \(responseString!)")
+                    let responseString = String(data: data!, encoding: .utf8)
+                    print("responseString = \(responseString!)")
                     let jsonResult: JSON = JSON(data: data!)
                     let businesses : [JSON] = jsonResult["businesses"].array!
                     var i = 0
                     for business in businesses {
                         print(business["name"].stringValue)
                         if i < 4 {
-                            self.options[i] = business["name"].stringValue
-                            i = i + 1
+                            if (business["rating"].doubleValue >= Double(self.minRating)){
+                                self.options[i] = business["name"].stringValue
+                                i = i + 1
+                            }
                         }
                     }
                     self.loadWheelOptions()
                     //self.loadWheelButtons()
                     self.wheel.isHidden = false
                     self.spinButton.isHidden = false
+ 
                     
                 }
             }
@@ -400,7 +426,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         }
         task.resume()
     }
-    
+    /*
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let locValue:CLLocationCoordinate2D = manager.location!.coordinate
         self.latitude = String(locValue.latitude)
@@ -411,6 +437,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         }
         
     }
+ */
     func getframeheight() -> CGFloat {
         return view.frame.size.height
     }

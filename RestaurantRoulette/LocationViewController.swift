@@ -113,8 +113,10 @@ extension LocationViewController: HandleMapSearch {
         let count = self.navigationController?.viewControllers.count;
         print(count!)
         let menuVC = self.navigationController?.viewControllers[count!-2] as! MenuViewController
-        menuVC.latitude = String(describing: selectedPin?.coordinate.latitude)
-        menuVC.longitude = String(describing: selectedPin?.coordinate.longitude)
+        print(String(describing: selectedPin!.coordinate.latitude))
+
+        menuVC.latitude = String(describing: selectedPin!.coordinate.latitude)
+        menuVC.longitude = String(describing: selectedPin!.coordinate.longitude)
     }
     
 }

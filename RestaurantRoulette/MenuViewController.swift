@@ -12,8 +12,13 @@ import MapKit
 class MenuViewController: UIViewController {
     var buttonArray: [UIButton] = [UIButton]()
     var viewsArray: [UIViewController] = [UIViewController]()
+    
     var latitude: String?
     var longitude: String?
+    var minRatings = 3
+    var searchRadius = 5.0
+    var prices = [true, true, false, false]
+
     var locButton: UIButton!
     var prefButton: UIButton!
     var wheelButton: UIButton!
@@ -65,7 +70,25 @@ class MenuViewController: UIViewController {
     }
     
     func buttonClicked(sender:UIButton) {
+        if (sender.tag == 2){
+            let wheelVC = self.viewsArray[2] as! WheelViewController
+            print(self.latitude!)
+            print(self.longitude!)
+            wheelVC.latitude = self.latitude!
+            wheelVC.longitude = self.longitude!
+            wheelVC.minRating = self.minRatings
+            wheelVC.searchRadius = Int(self.searchRadius * 1609.34)
+            wheelVC.prices = self.prices
+        }
+        print(latitude)
+        print(longitude)
+        print(minRatings)
+        print(searchRadius)
+        for b in prices {
+            print(b)
+        }
         self.navigationController?.pushViewController(self.viewsArray[sender.tag], animated: true)
+        //print(self.searchRadius)
     }
     
     func addDummyViews() {
@@ -98,7 +121,7 @@ class MenuViewController: UIViewController {
         //print(longitude! + " " + latitude!)
         if let longitude = self.longitude {
             if let latitude = self.latitude {
-                print(longitude + " " + latitude)
+                //print(longitude + " " + latitude)
                 enableButton(button: self.wheelButton)
                 enableButton(button: self.prefButton)
             }
