@@ -435,7 +435,7 @@ class WheelViewController: UIViewController, CLLocationManagerDelegate {
         let bundle = Bundle(for: PopUpViewController.self)
         self.popViewController = PopUpViewController(nibName: "PopUpViewController", bundle: bundle)
         self.popViewController.title = "This is a popup view"
-        self.popViewController.showInView(self.view, withImage: UIImage(named: "typpzDemo"), withMessage: "You just triggered a great popup window", animated: true)
+        self.popViewController.showInView(self.view, withImage: UIImage(named: "typpzDemo"), withMessage: option, animated: true)
     }
     
 }

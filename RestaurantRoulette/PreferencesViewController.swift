@@ -22,8 +22,8 @@ class PreferencesViewController: UIViewController {
     var priceLabel: UILabel!
     var priceImageViews: [UIImageView] = []
     var priceImages: [UIImage] = []
-    var onePriceTapped = false;
-    var twoPriceTapped = false;
+    var onePriceTapped = true;
+    var twoPriceTapped = true;
     var threePriceTapped = false;
     var fourPriceTapped = false;
     
@@ -166,7 +166,7 @@ class PreferencesViewController: UIViewController {
         let priceView = gestureRecognizer.view!
         let maxX = priceView.frame.maxX
         let iconReference = (self.view.frame.width - 60)/4 + 30
-        if (maxX < iconReference) {
+        if (maxX <= iconReference) {
             if !onePriceTapped {
                 self.priceImageViews[0].image = priceImages[1]
                 onePriceTapped = true
@@ -176,7 +176,7 @@ class PreferencesViewController: UIViewController {
                 onePriceTapped = false
             }
         }
-        else if (maxX < iconReference*2){
+        else if (maxX <= iconReference*2){
             if !twoPriceTapped {
                 self.priceImageViews[1].image = priceImages[3]
                 twoPriceTapped = true
@@ -187,7 +187,7 @@ class PreferencesViewController: UIViewController {
             }
 
         }
-        else if (maxX < iconReference*3) {
+        else if (maxX <= iconReference*3) {
             if !threePriceTapped {
                 self.priceImageViews[2].image = priceImages[5]
                 threePriceTapped = true
