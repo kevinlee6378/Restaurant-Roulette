@@ -75,7 +75,7 @@ class UserPreferencesViewController: UIViewController, UIPickerViewDelegate, UIP
     func doneTapped() {
         let count = self.navigationController?.viewControllers.count
         let profilesVC = self.navigationController?.viewControllers[count!-2] as! UserProfilesViewController
-        profilesVC.userProfiles.append(UserProfile(userID: 0, username: self.usernameTextField.text!, rating: self.minRatings, priceRanges: [self.onePriceTapped, self.twoPriceTapped, self.threePriceTapped, self.fourPriceTapped], maxDistance: Int(self.searchRadius)))
+        profilesVC.userProfiles.append(UserProfile(userID: 0, username: self.usernameTextField.text!, rating: self.minRatings, priceRanges: [self.onePriceTapped, self.twoPriceTapped, self.threePriceTapped, self.fourPriceTapped], maxDistance: self.searchRadius, type: self.pickedType))
         profilesVC.activeProfiles.append(false)
         self.navigationController?.popViewController(animated: true)
     }
