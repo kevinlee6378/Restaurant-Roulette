@@ -43,5 +43,16 @@
 	</array>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To Use App</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string></string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>None</string>
+		</dict>
+	</array>
 </dict>
 </plist>

@@ -26,10 +26,12 @@ class WheelViewController: UIViewController {
     var chosen: UITextView!
     var options = ["1", "2", "3", "4"]
     var logoImgUrl = ["","","",""]
+    var websiteUrl = ["","","",""]
     let rect1 = CGRect(x: 195, y: 75, width: 150, height: 100)
     var position = 0.0
     var option = ""
     var logoImg = ""
+    var weburl = ""
     var optionIndex = 0
     var hasFinishedSpinning = true
     var wheel: UIImageView!
@@ -300,6 +302,7 @@ class WheelViewController: UIViewController {
                 self.position = spinResult.truncatingRemainder(dividingBy: M_PI*2)
                 self.option = self.chooseBasedOnPosition(atPosition: self.position)
                 self.logoImg = self.chooseImgBasedOnPosition(atPosition: self.position)
+                self.weburl = self.chooseWebURLBasedOnPosition(atPosition: self.position)
                 self.hasFinishedSpinning = true
                 print(self.position/M_PI)
                 self.chosen.text = self.option
@@ -307,6 +310,7 @@ class WheelViewController: UIViewController {
                 //self.buttonArray[self.optionIndex].isHidden = false
                 print(self.optionIndex)
                 self.wedges[self.optionIndex].isHidden = false
+                self.showPopUp()
             }
             
         }
@@ -342,6 +346,10 @@ class WheelViewController: UIViewController {
     
     func chooseImgBasedOnPosition(atPosition pos: Double) -> String {
         return logoImgUrl[chooseIndexBasedOnPosition(atPosition: pos)]
+    }
+    
+    func chooseWebURLBasedOnPosition(atPosition pos: Double) -> String {
+        return websiteUrl[chooseIndexBasedOnPosition(atPosition: pos)]
     }
     
     func makeSearch(latitude: String, longitude: String, radius: Int, prices: [Bool], rating: Int) {
@@ -402,6 +410,7 @@ class WheelViewController: UIViewController {
                             if (business["rating"].doubleValue >= Double(self.minRating)){
                                 self.options[i] = business["name"].stringValue
                                 self.logoImgUrl[i] = business["image_url"].stringValue
+                                self.websiteUrl[i] = business["id"].stringValue
                                 i = i + 1
                             }
                         }
@@ -427,12 +436,14 @@ class WheelViewController: UIViewController {
         postString += "&client_secret=" + appSecret
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+            guard let data = data, error == nil else {
+                // check for fundamental networking error
                 print("error=\(error)")
                 return
             }
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
+                // check for http errors
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
                 print("response = \(response)")
             }
@@ -467,7 +478,7 @@ class WheelViewController: UIViewController {
         let bundle = Bundle(for: PopUpViewController.self)
         self.popViewController = PopUpViewController(nibName: "PopUpViewController", bundle: bundle)
         self.popViewController.title = "This is a popup view"
-        self.popViewController.showInView(self.view, withImage: logoImg, withMessage: option, animated: true)
+        self.popViewController.showInView(self.view, withImage: logoImg, withMessage: option, withURL: weburl, animated: true)
     }
     
 }
