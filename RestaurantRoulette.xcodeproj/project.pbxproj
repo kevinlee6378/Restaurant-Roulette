@@ -22,6 +22,9 @@
 		6846558B1EA41F600020440B /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 684655891EA41F600020440B /* PopUpViewController.swift */; };
 		6846558C1EA41F600020440B /* PopUpViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6846558A1EA41F600020440B /* PopUpViewController.xib */; };
 		686B3B3D1EA01C19007F1EF3 /* PreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 686B3B3C1EA01C19007F1EF3 /* PreferencesViewController.swift */; };
+		68E9FF6B1EAA784E00FBCCC3 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E9FF681EAA784E00FBCCC3 /* UserProfile.swift */; };
+		68E9FF6C1EAA784E00FBCCC3 /* UserPreferencesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E9FF691EAA784E00FBCCC3 /* UserPreferencesViewController.swift */; };
+		68E9FF6D1EAA784E00FBCCC3 /* UserProfilesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68E9FF6A1EAA784E00FBCCC3 /* UserProfilesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +66,9 @@
 		684655891EA41F600020440B /* PopUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
 		6846558A1EA41F600020440B /* PopUpViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PopUpViewController.xib; sourceTree = "<group>"; };
 		686B3B3C1EA01C19007F1EF3 /* PreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferencesViewController.swift; sourceTree = "<group>"; };
+		68E9FF681EAA784E00FBCCC3 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		68E9FF691EAA784E00FBCCC3 /* UserPreferencesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserPreferencesViewController.swift; sourceTree = "<group>"; };
+		68E9FF6A1EAA784E00FBCCC3 /* UserProfilesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfilesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +119,9 @@
 		3D8DE64D1E9BE2050024FF3C /* RestaurantRoulette */ = {
 			isa = PBXGroup;
 			children = (
+				68E9FF681EAA784E00FBCCC3 /* UserProfile.swift */,
+				68E9FF691EAA784E00FBCCC3 /* UserPreferencesViewController.swift */,
+				68E9FF6A1EAA784E00FBCCC3 /* UserProfilesViewController.swift */,
 				3D8DE64E1E9BE2050024FF3C /* AppDelegate.swift */,
 				3D8DE6521E9BE2050024FF3C /* Main.storyboard */,
 				3D8DE6551E9BE2050024FF3C /* Assets.xcassets */,
@@ -287,8 +296,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68E9FF6C1EAA784E00FBCCC3 /* UserPreferencesViewController.swift in Sources */,
 				3D710F2A1EA00EE30079595B /* ViewController.swift in Sources */,
+				68E9FF6D1EAA784E00FBCCC3 /* UserProfilesViewController.swift in Sources */,
 				3D710F241EA00D8E0079595B /* LocationViewController.swift in Sources */,
+				68E9FF6B1EAA784E00FBCCC3 /* UserProfile.swift in Sources */,
 				3D710F281EA00EC70079595B /* MenuViewController.swift in Sources */,
 				686B3B3D1EA01C19007F1EF3 /* PreferencesViewController.swift in Sources */,
 				3D710F221EA00D7C0079595B /* LocationSearchTable.swift in Sources */,

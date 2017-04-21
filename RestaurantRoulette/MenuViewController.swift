@@ -22,6 +22,7 @@ class MenuViewController: UIViewController {
 
     var locButton: UIButton!
     var prefButton: UIButton!
+    var profilesButton: UIButton!
     var wheelButton: UIButton!
     
     
@@ -53,6 +54,10 @@ class MenuViewController: UIViewController {
         self.prefButton.setTitle("Pick your preferences", for: UIControlState.normal)
         self.buttonArray.append(self.prefButton)
         
+        self.profilesButton = UIButton()
+        self.profilesButton.setTitle("User Profiles", for: UIControlState.normal)
+        self.buttonArray.append(self.profilesButton)
+        
         self.wheelButton = UIButton()
         self.wheelButton.setTitle("Find a restaurant", for: UIControlState.normal)
         self.buttonArray.append(self.wheelButton)
@@ -71,8 +76,8 @@ class MenuViewController: UIViewController {
     }
     
     func buttonClicked(sender:UIButton) {
-        if (sender.tag == 2){
-            let wheelVC = self.viewsArray[2] as! WheelViewController
+        if (sender.tag == 3){
+            let wheelVC = self.viewsArray[3] as! WheelViewController
             print(self.latitude!)
             print(self.longitude!)
             wheelVC.latitude = self.latitude!
@@ -103,6 +108,10 @@ class MenuViewController: UIViewController {
         let dummyController2 = PreferencesViewController()
         dummyController2.view.backgroundColor = UIColor.white
         self.viewsArray.append(dummyController2)
+        
+        let dummyController4 = UserProfilesViewController()
+        //dummyController3.view.backgroundColor = UIColor.blue
+        self.viewsArray.append(dummyController4)
         
         let dummyController3 = WheelViewController()
         //dummyController3.view.backgroundColor = UIColor.blue
