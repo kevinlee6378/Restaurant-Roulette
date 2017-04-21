@@ -19,6 +19,7 @@ class PopUpViewController: UIViewController {
     @IBOutlet weak var details: UILabel!
     
     var YelpUrl: String!
+    let screenSize:CGRect = UIScreen.main.bounds
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -31,13 +32,14 @@ class PopUpViewController: UIViewController {
     override open func viewDidLoad() {
         super.viewDidLoad()
         //popUpView.center = CGPoint(x: 100, y:);
-        popUpView.frame.origin.x = 20
+        //popUpView.frame.origin.x = 20
         //popUpView.frame.origin.y =
         self.view.backgroundColor = UIColor.gray.withAlphaComponent(0.6)
         self.popUpView.layer.cornerRadius = 5
         self.popUpView.layer.shadowOpacity = 0.8
         self.popUpView.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
         //self.popUpView.bounds(wheelViewController)
+        self.popUpView.frame = (self.view.superview?.frame)!
     }
     
     open func showInView(_ aView: UIView!, withImage image : String!, withMessage message: String!, withURL url: String!, animated: Bool)

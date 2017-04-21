@@ -226,7 +226,7 @@
 				TargetAttributes = {
 					3D8DE64A1E9BE2040024FF3C = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 8V3ZNLV5DT;
+						DevelopmentTeam = A9P9SMSE54;
 						ProvisioningStyle = Automatic;
 					};
 					3D8DE65E1E9BE2050024FF3C = {
@@ -460,7 +460,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 8V3ZNLV5DT;
+				DEVELOPMENT_TEAM = A9P9SMSE54;
 				INFOPLIST_FILE = RestaurantRoulette/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = KevinLee.RestaurantRoulette;
@@ -474,7 +474,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 8V3ZNLV5DT;
+				DEVELOPMENT_TEAM = A9P9SMSE54;
 				INFOPLIST_FILE = RestaurantRoulette/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = KevinLee.RestaurantRoulette;

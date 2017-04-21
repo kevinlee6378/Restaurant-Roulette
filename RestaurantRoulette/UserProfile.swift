@@ -13,21 +13,24 @@ class UserProfile {
     var username: String!
     var rating: Int!
     var priceRanges: [Bool]!
-    var maxDistance: Int!
+    var maxDistance: Double!
+    var type: String!
     
-    init(userID: Int, username: String, rating: Int, priceRanges: [Bool], maxDistance: Int) {
+    init(userID: Int, username: String, rating: Int, priceRanges: [Bool], maxDistance: Double, type: String) {
         self.userID = userID
         self.username = username
         self.rating = rating
         self.priceRanges = priceRanges
         self.maxDistance = maxDistance
+        self.type = type
     }
     
     init() {
         self.userID = 0
         self.username = ""
-        self.rating = 0
-        self.priceRanges = [true, true, true, true]
-        self.maxDistance = 5
+        self.rating = 3
+        self.priceRanges = [true, true, false, false]
+        self.maxDistance = 5.0
+        self.type = "All Restaurants"
     }
 }

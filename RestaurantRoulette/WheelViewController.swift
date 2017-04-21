@@ -12,7 +12,7 @@ import CoreLocation
 class WheelViewController: UIViewController {
     
     //var hasSearched = false
-   // var locationManager = CLLocationManager()
+    // var locationManager = CLLocationManager()
     var latitude: String = ""
     var longitude: String = ""
     var searchRadius = 0
@@ -24,24 +24,30 @@ class WheelViewController: UIViewController {
     var myCustomView: UIView!
     var buttonArray: [UIButton] = []
     var chosen: UITextView!
-    var options = ["1", "2", "3", "4"]
-    var logoImgUrl = ["","","",""]
-    var websiteUrl = ["","","",""]
+    var options: [(String, String)] = [("", ""), ("", ""), ("", ""), ("", "")]
     let rect1 = CGRect(x: 195, y: 75, width: 150, height: 100)
     var position = 0.0
     var option = ""
-    var logoImg = ""
-    var weburl = ""
     var optionIndex = 0
     var hasFinishedSpinning = true
     var wheel: UIImageView!
     var spinButton: UIButton!
     
+    var logoImgUrl = ["","","",""]
+    var websiteUrl = ["","","",""]
+    var logoImg = ""
+    var weburl = ""
+    
+    var businessesArray: [JSON] = []
+    var usedRestaurants: [String: Bool] = [:]
+    
+    var optionLabels: [UILabel] = [UILabel(), UILabel(), UILabel(), UILabel()]
+    
     var wedges = [UIImageView]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        makeSearch(latitude: self.latitude, longitude: self.longitude, radius: self.searchRadius, prices: self.prices, rating: self.minRating)
+        //makeSearch(latitude: self.latitude, longitude: self.longitude, radius: self.searchRadius, prices: self.prices, rating: self.minRating)
         setupWheel()
         setupSpinBUtton()
         setupChosen()
@@ -49,20 +55,21 @@ class WheelViewController: UIViewController {
         wheel.isHidden = true
         spinButton.isHidden = true
         
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Refresh", style: UIBarButtonItemStyle.plain, target: self, action: #selector(refreshRestaurants))
         /*
-        //request for authorization
-        //self.locationManager.requestAlwaysAuthorization()
-        self.locationManager.requestWhenInUseAuthorization()
-        
-        //start updating location once authorized
-        
-        if CLLocationManager.locationServicesEnabled() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-        }
-        
-        */
+         //request for authorization
+         //self.locationManager.requestAlwaysAuthorization()
+         self.locationManager.requestWhenInUseAuthorization()
+         
+         //start updating location once authorized
+         
+         if CLLocationManager.locationServicesEnabled() {
+         locationManager.delegate = self
+         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+         locationManager.startUpdatingLocation()
+         }
+         
+         */
         //getAccessToken()
         //makeSearch(latitude: self.latitude, longitude: self.longitude)
         wheel.isUserInteractionEnabled = true
@@ -84,6 +91,16 @@ class WheelViewController: UIViewController {
         swipeRight.direction = UISwipeGestureRecognizerDirection.right
         self.view.addGestureRecognizer(swipeRight)
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        makeSearch(latitude: self.latitude, longitude: self.longitude, radius: self.searchRadius, prices: self.prices, rating: self.minRating)
+        hideWedges()
+    }
+    
+    func refreshRestaurants() {
+        makeSearch(latitude: self.latitude, longitude: self.longitude, radius: self.searchRadius, prices: self.prices, rating: self.minRating)
+        hideWedges()
     }
     
     func rightSwiped() {
@@ -147,52 +164,67 @@ class WheelViewController: UIViewController {
     }
     
     func loadWheelOptions() {
-
-        textToImage(drawText: options[0] as NSString, inImage: wheel, atPoint: CGPoint(x: 200 - 100, y: 200 - 100), withAngle: CGFloat(M_PI_4 * Double(7)))
-        textToImage(drawText: options[1] as NSString, inImage: wheel, atPoint: CGPoint(x: 200 + 100, y: 200 - 100), withAngle:
+        for view in self.wheel.subviews {
+            if view is UILabel {
+                view.removeFromSuperview()
+            }
+        }
+        
+        textToImage(index: 0, drawText: options[0].1 as NSString , inImage: wheel, atPoint: CGPoint(x: 200 - 100, y: 200 - 100), withAngle: CGFloat(M_PI_4 * Double(7)))
+        textToImage(index: 1, drawText: options[1].1 as NSString, inImage: wheel, atPoint: CGPoint(x: 200 + 100, y: 200 - 100), withAngle:
             CGFloat(M_PI_4))
-        textToImage(drawText: options[2] as NSString, inImage: wheel, atPoint: CGPoint(x: 200 + 100, y: 200 + 100), withAngle:
+        textToImage(index: 2, drawText: options[2].1 as NSString, inImage: wheel, atPoint: CGPoint(x: 200 + 100, y: 200 + 100), withAngle:
             CGFloat(M_PI_4 * Double(3)))
-        textToImage(drawText: options[3] as NSString, inImage: wheel, atPoint: CGPoint(x: 200 - 100, y: 200 + 100), withAngle:
+        textToImage(index: 3, drawText: options[3].1 as NSString, inImage: wheel, atPoint: CGPoint(x: 200 - 100, y: 200 + 100), withAngle:
             CGFloat(M_PI_4 * Double(5)))
         
     }
-//    func loadWheelButtons() {
-//        let shiftx = 90.0
-//        let shifty = 110.0
-//        let button1 = UIButton(frame: CGRect(x:195 - shiftx, y: 75 - shifty + 50, width:120, height:50))
-//        button1.setTitle(options[0], for: .normal)
-//        button1.backgroundColor = .black
-//        button1.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-//        buttonArray.append(button1)
-//        let button4 = UIButton(frame: CGRect(x:317.5 - shiftx, y: 197.5 - shifty, width:60, height:100))
-//        button4.setTitle(options[1], for: .normal)
-//        
-//        button4.backgroundColor = .blue
-//        button4.addTarget(self, action: #selector(showDetails2), for: .touchUpInside)
-//        
-//        buttonArray.append(button4)
-//        let button2 = UIButton(frame: CGRect(x:195 - shiftx, y: 320 - shifty, width:120, height:50))
-//        button2.backgroundColor = .yellow
-//        button2.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-//        
-//        button2.setTitle(options[2], for: .normal)
-//        
-//        buttonArray.append(button2)
-//        let button3 = UIButton(frame: CGRect(x:72.5 - shiftx + 60, y: 197.5 - shifty, width:60, height:100))
-//        button3.backgroundColor = .red
-//        button3.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-//        button3.setTitle(options[3], for: .normal)
-//        
-//        buttonArray.append(button3)
-//        
-//        for button in buttonArray{
-//            wheel.addSubview(button)
-//        }
-//        hideButtons()
-//        
-//    }
-/*    func loadCustomViewIntoController()
+    
+    func shuffle(originalArray: Array<Any>) -> Array<Any> {
+        var result = originalArray
+        result.indices.dropLast().forEach {
+            guard case let index = Int(arc4random_uniform(UInt32(result.count - $0))) + $0, index != $0 else { return }
+            swap(&result[$0], &result[index])
+        }
+        return result
+    }
+    
+    //    func loadWheelButtons() {
+    //        let shiftx = 90.0
+    //        let shifty = 110.0
+    //        let button1 = UIButton(frame: CGRect(x:195 - shiftx, y: 75 - shifty + 50, width:120, height:50))
+    //        button1.setTitle(options[0], for: .normal)
+    //        button1.backgroundColor = .black
+    //        button1.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
+    //        buttonArray.append(button1)
+    //        let button4 = UIButton(frame: CGRect(x:317.5 - shiftx, y: 197.5 - shifty, width:60, height:100))
+    //        button4.setTitle(options[1], for: .normal)
+    //
+    //        button4.backgroundColor = .blue
+    //        button4.addTarget(self, action: #selector(showDetails2), for: .touchUpInside)
+    //
+    //        buttonArray.append(button4)
+    //        let button2 = UIButton(frame: CGRect(x:195 - shiftx, y: 320 - shifty, width:120, height:50))
+    //        button2.backgroundColor = .yellow
+    //        button2.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
+    //
+    //        button2.setTitle(options[2], for: .normal)
+    //
+    //        buttonArray.append(button2)
+    //        let button3 = UIButton(frame: CGRect(x:72.5 - shiftx + 60, y: 197.5 - shifty, width:60, height:100))
+    //        button3.backgroundColor = .red
+    //        button3.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
+    //        button3.setTitle(options[3], for: .normal)
+    //
+    //        buttonArray.append(button3)
+    //
+    //        for button in buttonArray{
+    //            wheel.addSubview(button)
+    //        }
+    //        hideButtons()
+    //
+    //    }
+    func loadCustomViewIntoController()
     {
         let xstart = self.view.center.x/4
         let ystart = self.view.center.y/2
@@ -218,7 +250,7 @@ class WheelViewController: UIViewController {
         
         okayButton.addTarget(self, action: #selector(self.okButtonImplementation), for:.touchUpInside)
         
-    }*/
+    }
     
     
     func okButtonImplementation(sender:UIButton){
@@ -234,13 +266,13 @@ class WheelViewController: UIViewController {
     }
     
     /*func showDetails2(sender: UIButton!){
-        if(hasFinishedSpinning){
-            print("Show Details")
-            loadCustomViewIntoController()
-        }
-    }*/
+     if(hasFinishedSpinning){
+     print("Show Details")
+     loadCustomViewIntoController()
+     }
+     }*/
     
-    func textToImage(drawText text: NSString, inImage imageView: UIImageView, atPoint point: CGPoint, withAngle angle: CGFloat) {
+    func textToImage(index: Int, drawText text: NSString, inImage imageView: UIImageView, atPoint point: CGPoint, withAngle angle: CGFloat) {
         let textView = UILabel()
         textView.backgroundColor = UIColor.clear
         textView.textAlignment = .center
@@ -253,25 +285,25 @@ class WheelViewController: UIViewController {
         textView.transform = transform
         imageView.addSubview(textView)
         
-//        let textColor = UIColor.white
-//        let textFont = UIFont(name: "Helvetica Bold", size: 12)!
-//        
-//        let scale = UIScreen.main.scale
-//        UIGraphicsBeginImageContextWithOptions(image.size, false, scale)
-//        
-//        let textFontAttributes = [
-//            NSFontAttributeName: textFont,
-//            NSForegroundColorAttributeName: textColor,
-//            ] as [String : Any]
-//        image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
-//        
-//        let rect = CGRect(origin: point, size: image.size)
-//        text.draw(in: rect, withAttributes: textFontAttributes)
-//        
-//        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-//        UIGraphicsEndImageContext()
-//        
-//        return newImage!
+        //        let textColor = UIColor.white
+        //        let textFont = UIFont(name: "Helvetica Bold", size: 12)!
+        //
+        //        let scale = UIScreen.main.scale
+        //        UIGraphicsBeginImageContextWithOptions(image.size, false, scale)
+        //
+        //        let textFontAttributes = [
+        //            NSFontAttributeName: textFont,
+        //            NSForegroundColorAttributeName: textColor,
+        //            ] as [String : Any]
+        //        image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
+        //
+        //        let rect = CGRect(origin: point, size: image.size)
+        //        text.draw(in: rect, withAttributes: textFontAttributes)
+        //
+        //        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        //        UIGraphicsEndImageContext()
+        //
+        //        return newImage!
     }
     
     override func didReceiveMemoryWarning() {
@@ -309,6 +341,8 @@ class WheelViewController: UIViewController {
                 self.optionIndex = self.chooseIndexBasedOnPosition(atPosition: self.position)
                 //self.buttonArray[self.optionIndex].isHidden = false
                 print(self.optionIndex)
+                print(self.options[self.optionIndex])
+                self.usedRestaurants[self.options[self.optionIndex].1] = true
                 self.wedges[self.optionIndex].isHidden = false
                 self.showPopUp()
             }
@@ -341,7 +375,7 @@ class WheelViewController: UIViewController {
         }
     }
     func chooseBasedOnPosition(atPosition pos: Double) -> String{
-        return options[chooseIndexBasedOnPosition(atPosition: pos)]
+        return options[chooseIndexBasedOnPosition(atPosition: pos)].1
     }
     
     func chooseImgBasedOnPosition(atPosition pos: Double) -> String {
@@ -351,6 +385,7 @@ class WheelViewController: UIViewController {
     func chooseWebURLBasedOnPosition(atPosition pos: Double) -> String {
         return websiteUrl[chooseIndexBasedOnPosition(atPosition: pos)]
     }
+    
     
     func makeSearch(latitude: String, longitude: String, radius: Int, prices: [Bool], rating: Int) {
         var U = "https://api.yelp.com/v3/businesses/search?term="
@@ -403,12 +438,14 @@ class WheelViewController: UIViewController {
                     print("responseString = \(responseString!)")
                     let jsonResult: JSON = JSON(data: data!)
                     let businesses : [JSON] = jsonResult["businesses"].array!
+                    self.businessesArray = businesses
+                    self.businessesArray = self.shuffle(originalArray: self.businessesArray) as! [JSON]
                     var i = 0
-                    for business in businesses {
+                    for business in self.businessesArray {
                         print(business["name"].stringValue)
                         if i < 4 {
-                            if (business["rating"].doubleValue >= Double(self.minRating)){
-                                self.options[i] = business["name"].stringValue
+                            if (business["rating"].doubleValue >= Double(self.minRating) && self.usedRestaurants[business["id"].stringValue] == nil){
+                                self.options[i] = (business["id"].stringValue, business["name"].stringValue)
                                 self.logoImgUrl[i] = business["image_url"].stringValue
                                 self.websiteUrl[i] = business["id"].stringValue
                                 i = i + 1
@@ -419,7 +456,7 @@ class WheelViewController: UIViewController {
                     //self.loadWheelButtons()
                     self.wheel.isHidden = false
                     self.spinButton.isHidden = false
- 
+                    
                     
                 }
             }
@@ -436,14 +473,12 @@ class WheelViewController: UIViewController {
         postString += "&client_secret=" + appSecret
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                // check for fundamental networking error
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
                 print("error=\(error)")
                 return
             }
             
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {
-                // check for http errors
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
                 print("statusCode should be 200, but is \(httpStatus.statusCode)")
                 print("response = \(response)")
             }
@@ -453,7 +488,7 @@ class WheelViewController: UIViewController {
         }
         task.resume()
     }
-
+    
     func getframeheight() -> CGFloat {
         return view.frame.size.height
     }

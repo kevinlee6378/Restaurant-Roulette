@@ -49,9 +49,10 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
     
     func compilePreferences() -> UserProfile {
         var averageRating = 0
-        var averageRadius = 0
+        var averageRadius = 0.0
         var priceRanges = [true, true, true, true]
         var count = 0
+        var typeString = ""
         
         for index in 0...userProfiles.count-1 {
             if self.activeProfiles[index] {
@@ -64,6 +65,9 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
                         priceRanges[priceIndex] = false
                     }
                 }
+                if (profile.type != "All Restaurants"){
+                    typeString.append(profile.type + ",")
+                }
             }
         }
         if count == 0 {
@@ -72,9 +76,9 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
         }
         
         averageRating = averageRating / count
-        averageRadius = averageRadius / count
+        averageRadius = averageRadius / Double(count)
         
-        return UserProfile(userID: 0, username: "", rating: averageRating, priceRanges: priceRanges, maxDistance: averageRadius)
+        return UserProfile(userID: -1, username: "", rating: averageRating, priceRanges: priceRanges, maxDistance: averageRadius, type: typeString)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

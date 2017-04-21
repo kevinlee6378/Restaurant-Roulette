@@ -24,6 +24,8 @@ class MenuViewController: UIViewController {
     var prefButton: UIButton!
     var profilesButton: UIButton!
     var wheelButton: UIButton!
+    var imageView: UIImageView!
+    var dictionary: [String:String] = ["All Restaurants": "all", "American": "newamerican", "Breakfast & Brunch":"breakfast_brunch", "Cafe" : "cafes", "Chinese": "chinese", "Indian": "indpak", "Mexican": "mexican", "SteakHouse": "steak", "Sushi": "sushi", "Vegetarian": "vegetarian"]
     
     
     override func viewDidLoad() {
@@ -39,11 +41,19 @@ class MenuViewController: UIViewController {
     
     func setup(){
         addDummyViews()
-        
+        self.imageView = UIImageView()
+        //self.imageView.backgroundColor = .black
+        self.imageView.image = #imageLiteral(resourceName: "girl_wheel")
+        let length = self.view.frame.height/2 - 60
+        self.imageView.frame = CGRect(x: (self.view.frame.width - length)/2, y: 30, width: length, height: length)
+        self.imageView.contentMode = .scaleAspectFit
+        self.view.addSubview(imageView)
         let width = CGFloat(200)
-        let height = CGFloat(50)
-        let padding = CGFloat(self.view.frame.height / 20)
-        var currY = self.view.frame.height / 2
+        //let height = CGFloat(50)
+        let padding = self.view.frame.height/30
+       // let padding = CGFloat(self.view.frame.height / 20)
+        let height = 2*padding
+        var currY = self.view.frame.height / 2 - padding
         let x = (self.view.frame.width - width) / 2
         
         self.locButton = UIButton()
@@ -77,24 +87,37 @@ class MenuViewController: UIViewController {
     
     func buttonClicked(sender:UIButton) {
         if (sender.tag == 3){
-            let wheelVC = self.viewsArray[3] as! WheelViewController
-            print(self.latitude!)
-            print(self.longitude!)
-            wheelVC.latitude = self.latitude!
-            wheelVC.longitude = self.longitude!
-            wheelVC.minRating = self.minRatings
-            wheelVC.searchRadius = Int(self.searchRadius * 1609.34)
-            wheelVC.prices = self.prices
-            wheelVC.type = self.type
+            let profilesVC = self.viewsArray[2] as! UserProfilesViewController
+            let compiledProfile = profilesVC.compilePreferences()
+            if (compiledProfile.userID == -1){
+                let wheelVC = self.viewsArray[3] as! WheelViewController
+                wheelVC.latitude = self.latitude!
+                wheelVC.longitude = self.longitude!
+                wheelVC.minRating = compiledProfile.rating
+                wheelVC.searchRadius = Int(compiledProfile.maxDistance * 1609.34)
+                wheelVC.prices = compiledProfile.priceRanges
+                wheelVC.type = compiledProfile.type
+            }
+            else {
+                let wheelVC = self.viewsArray[3] as! WheelViewController
+                //print(self.latitude!)
+                //print(self.longitude!)
+                wheelVC.latitude = self.latitude!
+                wheelVC.longitude = self.longitude!
+                wheelVC.minRating = self.minRatings
+                wheelVC.searchRadius = Int(self.searchRadius * 1609.34)
+                wheelVC.prices = self.prices
+                wheelVC.type = self.type
+            }
         }
-        print(latitude)
-        print(longitude)
-        print(minRatings)
-        print(searchRadius)
-        for b in prices {
-            print(b)
-        }
-        print(self.type)
+        //print(latitude)
+        //print(longitude)
+        //print(minRatings)
+        //print(searchRadius)
+        //for b in prices {
+         //   print(b)
+        //}
+        //print(self.type)
         self.navigationController?.pushViewController(self.viewsArray[sender.tag], animated: true)
         //print(self.searchRadius)
     }
