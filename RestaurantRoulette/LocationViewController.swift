@@ -13,6 +13,8 @@ protocol HandleMapSearch: class {
     func dropPinZoomIn(_ placemark:MKPlacemark)
 }
 
+var justOnce: Bool = true
+
 class LocationViewController : UIViewController {
     
     
@@ -48,6 +50,14 @@ class LocationViewController : UIViewController {
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        
+        if justOnce {
+            showSetCurrentAlert()
+            justOnce = false
+        }
+        
+    }
     
     func setupMapView() {
         self.mapView = MKMapView()
@@ -55,13 +65,54 @@ class LocationViewController : UIViewController {
         self.mapView.isZoomEnabled = true
         self.mapView.isScrollEnabled = true
         self.view.addSubview(self.mapView)
-        //mapView.showsUserLocation = true
+        mapView.showsUserLocation = true
     }
     
     func setupTableView() {
         self.locationSearchTable = LocationSearchTable()
         self.locationSearchTable.view.frame = self.view.frame
         self.view.addSubview(self.locationSearchTable.view)
+    }
+    
+    func showSetCurrentAlert() {
+        let alert = UIAlertController(title: "Choose a location", message: "Would you like to set location to your current location?", preferredStyle: UIAlertControllerStyle.alert)
+        
+        // add the actions (buttons)
+        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: setToCurrentLocation))
+        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: nil))
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
+        
+    }
+    
+    func setToCurrentLocation(alert: UIAlertAction!) {
+        let myAnnotation: MKPointAnnotation = MKPointAnnotation()
+        myAnnotation.coordinate = CLLocationCoordinate2DMake(mapView.userLocation.coordinate.latitude, mapView.userLocation.coordinate.longitude);
+        mapView.addAnnotation(myAnnotation)
+        let span = MKCoordinateSpanMake(0.05, 0.05)
+        let region = MKCoordinateRegionMake(myAnnotation.coordinate, span)
+        mapView.setRegion(region, animated: true)
+        let count = self.navigationController?.viewControllers.count;
+        //print(count!)
+        let menuVC = self.navigationController?.viewControllers[count!-2] as! MenuViewController
+        print(String(describing: myAnnotation.coordinate.latitude))
+        
+        menuVC.latitude = String(describing: myAnnotation.coordinate.latitude)
+        menuVC.longitude = String(describing: myAnnotation.coordinate.longitude)
+        YourLocationIsSet()
+    }
+    
+    func YourLocationIsSet() {
+        let alert = UIAlertController(title: "Success", message: "Your location is sucessfully set", preferredStyle: UIAlertControllerStyle.alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: gotoMenuPage))
+        //alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: nil))
+        // show the alert
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func gotoMenuPage(alert: UIAlertAction!) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -117,6 +168,7 @@ extension LocationViewController: HandleMapSearch {
 
         menuVC.latitude = String(describing: selectedPin!.coordinate.latitude)
         menuVC.longitude = String(describing: selectedPin!.coordinate.longitude)
+        YourLocationIsSet()
     }
     
 }
