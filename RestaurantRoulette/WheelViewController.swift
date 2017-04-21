@@ -25,9 +25,11 @@ class WheelViewController: UIViewController {
     var buttonArray: [UIButton] = []
     var chosen: UITextView!
     var options = ["1", "2", "3", "4"]
+    var logoImgUrl = ["","","",""]
     let rect1 = CGRect(x: 195, y: 75, width: 150, height: 100)
     var position = 0.0
     var option = ""
+    var logoImg = ""
     var optionIndex = 0
     var hasFinishedSpinning = true
     var wheel: UIImageView!
@@ -188,7 +190,7 @@ class WheelViewController: UIViewController {
 //        hideButtons()
 //        
 //    }
-    func loadCustomViewIntoController()
+/*    func loadCustomViewIntoController()
     {
         let xstart = self.view.center.x/4
         let ystart = self.view.center.y/2
@@ -214,7 +216,7 @@ class WheelViewController: UIViewController {
         
         okayButton.addTarget(self, action: #selector(self.okButtonImplementation), for:.touchUpInside)
         
-    }
+    }*/
     
     
     func okButtonImplementation(sender:UIButton){
@@ -297,6 +299,7 @@ class WheelViewController: UIViewController {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
                 self.position = spinResult.truncatingRemainder(dividingBy: M_PI*2)
                 self.option = self.chooseBasedOnPosition(atPosition: self.position)
+                self.logoImg = self.chooseImgBasedOnPosition(atPosition: self.position)
                 self.hasFinishedSpinning = true
                 print(self.position/M_PI)
                 self.chosen.text = self.option
@@ -335,6 +338,10 @@ class WheelViewController: UIViewController {
     }
     func chooseBasedOnPosition(atPosition pos: Double) -> String{
         return options[chooseIndexBasedOnPosition(atPosition: pos)]
+    }
+    
+    func chooseImgBasedOnPosition(atPosition pos: Double) -> String {
+        return logoImgUrl[chooseIndexBasedOnPosition(atPosition: pos)]
     }
     
     func makeSearch(latitude: String, longitude: String, radius: Int, prices: [Bool], rating: Int) {
@@ -394,6 +401,7 @@ class WheelViewController: UIViewController {
                         if i < 4 {
                             if (business["rating"].doubleValue >= Double(self.minRating)){
                                 self.options[i] = business["name"].stringValue
+                                self.logoImgUrl[i] = business["image_url"].stringValue
                                 i = i + 1
                             }
                         }
@@ -459,7 +467,7 @@ class WheelViewController: UIViewController {
         let bundle = Bundle(for: PopUpViewController.self)
         self.popViewController = PopUpViewController(nibName: "PopUpViewController", bundle: bundle)
         self.popViewController.title = "This is a popup view"
-        self.popViewController.showInView(self.view, withImage: UIImage(named: "typpzDemo"), withMessage: option, animated: true)
+        self.popViewController.showInView(self.view, withImage: logoImg, withMessage: option, animated: true)
     }
     
 }

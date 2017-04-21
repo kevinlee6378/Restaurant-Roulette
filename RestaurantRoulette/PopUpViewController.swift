@@ -31,16 +31,21 @@ class PopUpViewController: UIViewController {
         //popUpView.center = CGPoint(x: 100, y:);
         popUpView.frame.origin.x = 20
         //popUpView.frame.origin.y =
-        self.view.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        self.view.backgroundColor = UIColor.gray.withAlphaComponent(0.6)
         self.popUpView.layer.cornerRadius = 5
         self.popUpView.layer.shadowOpacity = 0.8
         self.popUpView.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
     }
     
-    open func showInView(_ aView: UIView!, withImage image : UIImage!, withMessage message: String!, animated: Bool)
+    open func showInView(_ aView: UIView!, withImage image : String!, withMessage message: String!, animated: Bool)
     {
         aView.addSubview(self.view)
-        logoImg!.image = image
+        if let url = NSURL(string: image) {
+            if let data = NSData(contentsOf: url as URL) {
+                logoImg!.image = UIImage(data: data as Data)
+            }        
+        }
+        //logoImg!.image = image
         details!.text = message
         if animated
         {
