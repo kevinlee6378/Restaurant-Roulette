@@ -145,6 +145,9 @@ extension LocationViewController: HandleMapSearch {
     
     func dropPinZoomIn(_ placemark: MKPlacemark){
         // cache the pin
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+            self.YourLocationIsSet()
+        }
         selectedPin = placemark
         // clear existing pins
         mapView.removeAnnotations(mapView.annotations)
@@ -168,7 +171,7 @@ extension LocationViewController: HandleMapSearch {
 
         menuVC.latitude = String(describing: selectedPin!.coordinate.latitude)
         menuVC.longitude = String(describing: selectedPin!.coordinate.longitude)
-        YourLocationIsSet()
+        
     }
     
 }
