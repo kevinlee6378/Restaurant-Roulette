@@ -24,6 +24,7 @@ class MenuViewController: UIViewController {
     var prefButton: UIButton!
     var profilesButton: UIButton!
     var wheelButton: UIButton!
+    var imageView: UIImageView!
     
     
     override func viewDidLoad() {
@@ -39,11 +40,19 @@ class MenuViewController: UIViewController {
     
     func setup(){
         addDummyViews()
-        
+        self.imageView = UIImageView()
+        //self.imageView.backgroundColor = .black
+        self.imageView.image = #imageLiteral(resourceName: "girl_wheel")
+        let length = self.view.frame.height/2 - 60
+        self.imageView.frame = CGRect(x: (self.view.frame.width - length)/2, y: 30, width: length, height: length)
+        self.imageView.contentMode = .scaleAspectFit
+        self.view.addSubview(imageView)
         let width = CGFloat(200)
-        let height = CGFloat(50)
-        let padding = CGFloat(self.view.frame.height / 20)
-        var currY = self.view.frame.height / 2
+        //let height = CGFloat(50)
+        let padding = self.view.frame.height/30
+       // let padding = CGFloat(self.view.frame.height / 20)
+        let height = 2*padding
+        var currY = self.view.frame.height / 2 - padding
         let x = (self.view.frame.width - width) / 2
         
         self.locButton = UIButton()

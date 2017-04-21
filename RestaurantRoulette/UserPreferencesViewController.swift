@@ -16,7 +16,11 @@
 
 import UIKit
 
-class UserPreferencesViewController: UIViewController {
+class UserPreferencesViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+    
+    var width: Int = 0
+    var height: Int = 0
+    var scrollView: UIScrollView!
     
     var usernameLabel: UILabel!
     var usernameTextField: UITextField!
@@ -33,24 +37,39 @@ class UserPreferencesViewController: UIViewController {
     var priceLabel: UILabel!
     var priceImageViews: [UIImageView] = []
     var priceImages: [UIImage] = []
-    var onePriceTapped = false;
-    var twoPriceTapped = false;
-    var threePriceTapped = false;
-    var fourPriceTapped = false;
+    var onePriceTapped = true
+    var twoPriceTapped = true
+    var threePriceTapped = false
+    var fourPriceTapped = false
+    
+    var typeLabel: UILabel!
+    var typePickerView: UIPickerView!
+    var typeArray: [String] = ["All Restaurants","American","Breakfast & Brunch", "Cafe", "Chinese", "Indian", "Mexican", "SteakHouse", "Sushi", "Vegetarian"]
+    var pickedType = "All Restaurants"
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupUsernameTextField()
+        self.width = Int(self.view.frame.width - 60)
+        self.height = 100
+        scrollView = UIScrollView()
+        scrollView.frame = self.view.bounds
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 810)
+        self.setupUsernameTextField(x: 30, y: 30)
+        self.setUpRestaurantType(x:30, y: 130)
         self.addStarAssests()
-        self.setupRating()
-        self.setUpSearchRadius()
-        self.setUpRestaurantType()
+        self.setupRating(x:30, y: 280)
         self.addPriceAssets()
-        self.setUpPrice()
-        
+        self.setUpPrice(x:30, y: 430)
+        self.setUpSearchRadius(x: 30, y: 580)
+        self.view.addSubview(scrollView)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(doneTapped))
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     func doneTapped() {
@@ -60,44 +79,67 @@ class UserPreferencesViewController: UIViewController {
         profilesVC.activeProfiles.append(false)
         self.navigationController?.popViewController(animated: true)
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func setupUsernameTextField() {
-        let width = self.view.frame.width - 60
-        let height = 100
-        
+    func setupUsernameTextField(x: Int, y: Int) {
         self.usernameLabel = UILabel()
-        self.usernameLabel.frame = CGRect(x: 30, y: 30, width: Int(width), height: height/2)
+        self.usernameLabel.frame = CGRect(x: x, y: y, width: Int(width), height: height/2)
         self.usernameLabel.text = "Username"
-        self.view.addSubview(self.usernameLabel)
+        self.scrollView.addSubview(self.usernameLabel)
         
         self.usernameTextField = UITextField()
-        self.usernameTextField.frame = CGRect(x: 30, y: 80, width: Int(width), height: height/2)
-        self.view.addSubview(self.usernameTextField)
+        self.usernameTextField.frame = CGRect(x: x, y: y+50, width: Int(width), height: height/2)
+        self.scrollView.addSubview(self.usernameTextField)
+    }
+  
+    func setUpRestaurantType(x: Int, y: Int) {
+        self.typeLabel = UILabel()
+        self.typeLabel.frame = CGRect(x: x, y: y, width: Int(width), height: height/2)
+        self.typeLabel.text = "Type of Food"
+        self.scrollView.addSubview(self.typeLabel)
+        
+        self.typePickerView = UIPickerView()
+        self.typePickerView.dataSource = self
+        self.typePickerView.delegate = self
+        self.typePickerView.frame = CGRect(x: x, y: y+50, width: Int(width), height: height)
+        self.scrollView.addSubview(self.typePickerView)
     }
     
-    func setupRating() {
-        
-        let width = self.view.frame.width - 60
-        let height = 100
-        
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return typeArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return typeArray[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.pickedType = typeArray[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return self.view.frame.width/2
+    }
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 36.0
+    }
+    
+    func setupRating(x: Int, y: Int) {
         self.ratingLabel = UILabel()
-        self.ratingLabel.frame = CGRect(x: 30, y: 30 + 150, width: Int(width), height: height/2)
+        self.ratingLabel.frame = CGRect(x: x, y: y, width: Int(width), height: height/2)
         self.ratingLabel.text = "Rating"
-        self.view.addSubview(self.ratingLabel)
+        self.scrollView.addSubview(self.ratingLabel)
         
         self.ratingStarsImageView = UIImageView()
-        self.ratingStarsImageView.frame = CGRect(x: 30, y: 80 + 150, width: Int(width), height: height)
+        self.ratingStarsImageView.frame = CGRect(x: x, y: y+50, width: Int(width), height: height)
         self.ratingStarsImageView.contentMode = .scaleAspectFit
         self.ratingStarsImageView.isUserInteractionEnabled = true
         let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ratingTapped))
         self.ratingStarsImageView.addGestureRecognizer(tapRecognizer)
         self.ratingStarsImageView.image = self.ratingStarsImages[2]
-        self.view.addSubview(self.ratingStarsImageView)
+        self.scrollView.addSubview(self.ratingStarsImageView)
         
     }
     func ratingTapped(gestureRecognizer: UITapGestureRecognizer) {
@@ -127,27 +169,6 @@ class UserPreferencesViewController: UIViewController {
         }
     }
     
-    func setUpSearchRadius() {
-        
-        let width = self.view.frame.width - 60
-        let height = 100
-        
-        self.radiusLabel = UILabel()
-        self.radiusLabel.frame = CGRect(x: 30, y: 330 + 150, width: Int(width), height: height/2)
-        self.radiusLabel.text = "Max Distance: 5 Miles"
-        self.view.addSubview(self.radiusLabel)
-        
-        self.radiusSlider = UISlider()
-        self.radiusSlider.minimumValue = 1
-        self.radiusSlider.maximumValue = 25
-        self.radiusSlider.isContinuous = true
-        self.radiusSlider.value = 5
-        
-        self.radiusSlider.frame = CGRect(x: 30, y: 380 + 150, width: Int(width), height: height)
-        self.radiusSlider.addTarget(self, action: #selector(radiusDidChange(sender:)), for: .valueChanged)
-        self.view.addSubview(self.radiusSlider)
-        
-    }
     func addStarAssests() {
         self.ratingStarsImages.append(UIImage(named: "regular_1")!)
         self.ratingStarsImages.append(UIImage(named: "regular_2")!)
@@ -156,31 +177,16 @@ class UserPreferencesViewController: UIViewController {
         self.ratingStarsImages.append(UIImage(named: "regular_5")!)
     }
     
-    func radiusDidChange(sender: UISlider!) {
-        //self.ratingStarsImageView.image = ratingStarsImages[Int(2*round(ratingSlider.value*2)/2.0 - 2)]
-        let currentRadius = self.radiusSlider.value
-        let roundedRadius = round(currentRadius*10)/10
-        self.searchRadius = Double(roundedRadius)
-        self.radiusLabel.text = "Search Radius: " + String(roundedRadius) + " Miles"
-    }
-    func setUpRestaurantType() {
-        
-    }
-    func setUpPrice(){
-        let width = self.view.frame.width - 60
-        let height = 100
-        
+    func setUpPrice(x: Int, y: Int){
         self.priceLabel = UILabel()
-        self.priceLabel.frame = CGRect(x: 30, y: 180 + 150, width: Int(width), height: height/2)
+        self.priceLabel.frame = CGRect(x: x, y: y, width: Int(width), height: height/2)
         self.priceLabel.text = "Prices"
-        self.view.addSubview(self.priceLabel)
-        let totalWidth = self.view.frame.width
-        let twMinusPadding = totalWidth - 60
-        let iconWidth = twMinusPadding/4
+        self.scrollView.addSubview(self.priceLabel)
+        let iconWidth = self.width/4
         
         for index in 0...3 {
             let imageView = UIImageView()
-            imageView.frame = CGRect(x: 30 + Int(iconWidth)*index, y: 230 + 150, width: Int(iconWidth), height: height)
+            imageView.frame = CGRect(x: x + Int(iconWidth)*index, y: y + 50, width: Int(iconWidth), height: height)
             imageView.contentMode = .scaleAspectFit
             imageView.isUserInteractionEnabled = true
             let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(priceTapped))
@@ -191,16 +197,16 @@ class UserPreferencesViewController: UIViewController {
             else{
                 imageView.image = self.priceImages[index*2]
             }
-            self.view.addSubview(imageView)
+            self.scrollView.addSubview(imageView)
             self.priceImageViews.append(imageView)
         }
         
     }
     func priceTapped(gestureRecognizer: UITapGestureRecognizer) {
         let priceView = gestureRecognizer.view!
-        let maxX = priceView.frame.maxX
-        let iconReference = (self.view.frame.width - 60)/4 + 30
-        if (maxX < iconReference) {
+        let maxX = Int(priceView.frame.maxX)
+        let iconReference = self.width/4 + 30
+        if (maxX <= iconReference) {
             if !onePriceTapped {
                 self.priceImageViews[0].image = priceImages[1]
                 onePriceTapped = true
@@ -210,7 +216,7 @@ class UserPreferencesViewController: UIViewController {
                 onePriceTapped = false
             }
         }
-        else if (maxX < iconReference*2){
+        else if (maxX <= iconReference*2){
             if !twoPriceTapped {
                 self.priceImageViews[1].image = priceImages[3]
                 twoPriceTapped = true
@@ -221,7 +227,7 @@ class UserPreferencesViewController: UIViewController {
             }
             
         }
-        else if (maxX < iconReference*3) {
+        else if (maxX <= iconReference*3) {
             if !threePriceTapped {
                 self.priceImageViews[2].image = priceImages[5]
                 threePriceTapped = true
@@ -255,5 +261,30 @@ class UserPreferencesViewController: UIViewController {
         self.priceImages.append(UIImage(named: "e_4")!)
         self.priceImages.append(UIImage(named: "f_4")!)
     }
+    
+    func setUpSearchRadius(x: Int, y: Int) {
+        self.radiusLabel = UILabel()
+        self.radiusLabel.frame = CGRect(x: x, y: y, width: Int(width), height: height/2)
+        self.radiusLabel.text = "Max Distance: 5 Miles"
+        self.scrollView.addSubview(self.radiusLabel)
         
+        self.radiusSlider = UISlider()
+        self.radiusSlider.minimumValue = 1
+        self.radiusSlider.maximumValue = 25
+        self.radiusSlider.isContinuous = true
+        self.radiusSlider.value = 5
+        
+        self.radiusSlider.frame = CGRect(x: x, y: y + 50, width: Int(width), height: height)
+        self.radiusSlider.addTarget(self, action: #selector(radiusDidChange(sender:)), for: .valueChanged)
+        self.scrollView.addSubview(self.radiusSlider)
+        
+    }
+    
+    func radiusDidChange(sender: UISlider!) {
+        //self.ratingStarsImageView.image = ratingStarsImages[Int(2*round(ratingSlider.value*2)/2.0 - 2)]
+        let currentRadius = self.radiusSlider.value
+        let roundedRadius = round(currentRadius*10)/10
+        self.searchRadius = Double(roundedRadius)
+        self.radiusLabel.text = "Search Radius: " + String(roundedRadius) + " Miles"
+    }
 }
