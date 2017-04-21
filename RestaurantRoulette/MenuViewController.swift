@@ -18,6 +18,7 @@ class MenuViewController: UIViewController {
     var minRatings = 3
     var searchRadius = 5.0
     var prices = [true, true, false, false]
+    var type = "All Restaurants"
 
     var locButton: UIButton!
     var prefButton: UIButton!
@@ -79,6 +80,7 @@ class MenuViewController: UIViewController {
             wheelVC.minRating = self.minRatings
             wheelVC.searchRadius = Int(self.searchRadius * 1609.34)
             wheelVC.prices = self.prices
+            wheelVC.type = self.type
         }
         print(latitude)
         print(longitude)
@@ -87,6 +89,7 @@ class MenuViewController: UIViewController {
         for b in prices {
             print(b)
         }
+        print(self.type)
         self.navigationController?.pushViewController(self.viewsArray[sender.tag], animated: true)
         //print(self.searchRadius)
     }

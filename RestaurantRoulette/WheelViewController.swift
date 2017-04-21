@@ -18,6 +18,7 @@ class WheelViewController: UIViewController {
     var searchRadius = 0
     var minRating = 0
     var prices: [Bool] = []
+    var type = ""
     let accessToken = "cvpQEJX1h215Y9TKBauwapUB1FeMVW_KdmO-NOaXYZ0liusAnXlYYGlmnPZknmODwTxi9cdduq_6lH--VxBV34dh5L3DQUuUbIJlAyWSieblnnY1WGxCHfqbTfzTWHYx"
     var baseView: UIView!
     var myCustomView: UIView!
@@ -242,7 +243,7 @@ class WheelViewController: UIViewController {
         textView.numberOfLines = 3
         textView.text = text as String
         textView.frame = CGRect(x: point.x - 100, y: point.y - 100, width: 200, height: 200)
-        print(textView.frame)
+        //print(textView.frame)
         //var transform = CGAffineTransform(translationX: 150, y: 92)
         var transform = CGAffineTransform(rotationAngle:angle)
         textView.transform = transform
@@ -337,7 +338,16 @@ class WheelViewController: UIViewController {
     }
     
     func makeSearch(latitude: String, longitude: String, radius: Int, prices: [Bool], rating: Int) {
-        var U = "https://api.yelp.com/v3/businesses/search?term=restaurants&latitude="
+        var U = "https://api.yelp.com/v3/businesses/search?term="
+        var typeQuery = ""
+        if (type == "All Restaurants"){
+            typeQuery = "restaurants"
+        }
+        else {
+            typeQuery = type
+        }
+        U += typeQuery
+        U += "&latitude="
         U += latitude
         U += "&longitude="
         U += longitude
@@ -361,10 +371,8 @@ class WheelViewController: UIViewController {
                 }
             }
         }
-        print(priceQuery)
         U += priceQuery
         print(U)
-        //var request = URLRequest(url: URL(string: ("https://api.yelp.com/v3/businesses/search?term=restaurants&latitude=38.6682&longitude=-90.3325&limit=20"))!)
         var request = URLRequest(url: URL(string: U)!)
         request.httpMethod = "GET"
         request.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
@@ -426,18 +434,7 @@ class WheelViewController: UIViewController {
         }
         task.resume()
     }
-    /*
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue:CLLocationCoordinate2D = manager.location!.coordinate
-        self.latitude = String(locValue.latitude)
-        self.longitude = String(locValue.longitude)
-        if !hasSearched {
-            self.makeSearch(latitude: self.latitude, longitude: self.longitude)
-            hasSearched = true
-        }
-        
-    }
- */
+
     func getframeheight() -> CGFloat {
         return view.frame.size.height
     }

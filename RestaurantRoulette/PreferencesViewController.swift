@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PreferencesViewController: UIViewController {
+class PreferencesViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var ratingLabel: UILabel!
     var ratingStarsImageView: UIImageView!
@@ -45,11 +45,20 @@ class PreferencesViewController: UIViewController {
             pushToMVC()
         }
     }
-    var fourPriceTapped = false{
+    var fourPriceTapped = false {
         didSet{
             pushToMVC()
         }
     }
+    
+    var typePickerView: UIPickerView!
+    var typeArray: [String] = ["All Restaurants","American","Breakfast & Brunch", "Cafe", "Chinese", "Indian", "Mexican", "SteakHouse", "Sushi", "Vegetarian"]
+    var pickedType = "All Restaurants" {
+        didSet{
+            pushToMVC()
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,6 +85,7 @@ class PreferencesViewController: UIViewController {
         menuVC.prices[1] = self.twoPriceTapped
         menuVC.prices[2] = self.threePriceTapped
         menuVC.prices[3] = self.fourPriceTapped
+        menuVC.type = self.pickedType
     }
     
     func setupRating() {
@@ -161,9 +171,7 @@ class PreferencesViewController: UIViewController {
         self.searchRadius = Double(roundedRadius)
         self.radiusLabel.text = "Search Radius: " + String(roundedRadius) + " Miles"
     }
-    func setUpRestaurantType() {
-        
-    }
+    
     func setUpPrice(){
         let width = self.view.frame.width - 60
         let height = 100
@@ -252,7 +260,37 @@ class PreferencesViewController: UIViewController {
         self.priceImages.append(UIImage(named: "f_3")!)
         self.priceImages.append(UIImage(named: "e_4")!)
         self.priceImages.append(UIImage(named: "f_4")!)
-
     }
-
+    func setUpRestaurantType() {
+        let width = self.view.frame.width - 60
+        let height = 100
+        self.typePickerView = UIPickerView()
+        self.typePickerView.dataSource = self
+        self.typePickerView.delegate = self
+        self.typePickerView.frame = CGRect(x: 30, y: 480, width: Int(width), height: height)
+        self.view.addSubview(self.typePickerView)
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return typeArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return typeArray[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.pickedType = typeArray[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return self.view.frame.width/2
+    }
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 36.0
+    }
 }
