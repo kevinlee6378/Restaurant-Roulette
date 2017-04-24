@@ -81,6 +81,30 @@ class UserPreferencesViewController: UIViewController, UIPickerViewDelegate, UIP
         self.navigationController?.popViewController(animated: true)
     }
     
+    func saveProfile() {
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        
+        let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        let entity =
+            NSEntityDescription.entity(forEntityName: "UserProfile",
+                                       in: managedContext)!
+        
+        let userProfile = NSManagedObject(entity: entity,
+                                     insertInto: managedContext)
+        
+        userProfile.setValue(self.usernameTextField.text, forKeyPath: "username")
+        
+        do {
+            try managedContext.save()
+            //people.append(person)
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+    }
     
     func setupUsernameTextField(x: Int, y: Int) {
         self.usernameLabel = UILabel()
