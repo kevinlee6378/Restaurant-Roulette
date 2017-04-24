@@ -89,14 +89,16 @@ class UserPreferencesViewController: UIViewController, UIPickerViewDelegate, UIP
         
         let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         
-        let entity =
-            NSEntityDescription.entity(forEntityName: "UserProfile",
-                                       in: managedContext)!
+        let userProfile = NSEntityDescription.insertNewObject(forEntityName: "UserProfileEntity", into: managedContext)
         
-        let userProfile = NSManagedObject(entity: entity,
-                                     insertInto: managedContext)
-        
-        userProfile.setValue(self.usernameTextField.text, forKeyPath: "username")
+        userProfile.setValue(self.usernameTextField.text, forKey: "username")
+        userProfile.setValue(self.minRatings, forKey: "rating")
+        userProfile.setValue(self.onePriceTapped, forKey: "priceRange0")
+        userProfile.setValue(self.twoPriceTapped, forKey: "priceRange1")
+        userProfile.setValue(self.threePriceTapped, forKey: "priceRange2")
+        userProfile.setValue(self.fourPriceTapped, forKey: "priceRange3")
+        userProfile.setValue(self.typePickerView.selectedRow(inComponent: 0).description, forKey: "foodType")
+        //userProfile.setValue(self.username, forKey: <#T##String#>)
         
         do {
             try managedContext.save()
