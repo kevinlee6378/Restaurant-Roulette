@@ -1,321 +1,71 @@
 //
-//  ViewController.swift
-//  Restaurant-Roulette
+//  UserPreferencesViewController.swift
+//  RestaurantRoulette
 //
-//  Created by Kevin Lee on 2/22/17.
+//  Created by Labuser on 4/21/17.
+//  Copyright © 2017 Kevin Lee. All rights reserved.
+//
+
+//
+//  PreferencesViewController.swift
+//  RestaurantRoulette
+//
+//  Created by Labuser on 4/13/17.
 //  Copyright © 2017 Kevin Lee. All rights reserved.
 //
 
 import UIKit
-import CoreLocation
+import CoreData
 
-class WheelViewController: UIViewController {
+class UserPreferencesViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    //var hasSearched = false
-    // var locationManager = CLLocationManager()
-    var latitude: String = ""
-    var longitude: String = ""
-    var searchRadius = 0
-    var minRating = 0
-    var prices: [Bool] = []
-    var type = ""
-    let accessToken = "cvpQEJX1h215Y9TKBauwapUB1FeMVW_KdmO-NOaXYZ0liusAnXlYYGlmnPZknmODwTxi9cdduq_6lH--VxBV34dh5L3DQUuUbIJlAyWSieblnnY1WGxCHfqbTfzTWHYx"
-    var baseView: UIView!
-    var myCustomView: UIView!
-    var buttonArray: [UIButton] = []
-    var chosen: UITextView!
-    var options: [(String, String)] = [("", ""), ("", ""), ("", ""), ("", "")]
-    let rect1 = CGRect(x: 195, y: 75, width: 150, height: 100)
-    var position = 0.0
-    var option = ""
-    var optionIndex = 0
-    var hasFinishedSpinning = true
-    var wheel: UIImageView!
-    var spinButton: UIButton!
+    var width: Int = 0
+    var height: Int = 0
+    var scrollView: UIScrollView!
     
-    var logoImgUrl = ["","","",""]
-    var websiteUrl = ["","","",""]
-    var logoImg = ""
-    var weburl = ""
+    var usernameLabel: UILabel!
+    var usernameTextField: UITextField!
     
-    var wheelSize: Int = 0
-    var wheelHalfSize: Int = 0
-    var wheelQuarterSize: Int = 0
+    var ratingLabel: UILabel!
+    var ratingStarsImageView: UIImageView!
+    var ratingStarsImages: [UIImage] = []
+    var minRatings = 3
     
+    var radiusLabel: UILabel!
+    var radiusSlider: UISlider!
+    var searchRadius = 5.0
     
-    var businessesArray: [JSON] = []
-    var usedRestaurants: [String: Bool] = [:]
+    var priceLabel: UILabel!
+    var priceImageViews: [UIImageView] = []
+    var priceImages: [UIImage] = []
+    var onePriceTapped = true
+    var twoPriceTapped = true
+    var threePriceTapped = false
+    var fourPriceTapped = false
     
-    var optionLabels: [UILabel] = [UILabel(), UILabel(), UILabel(), UILabel()]
+    var typeLabel: UILabel!
+    var typePickerView: UIPickerView!
+    var typeArray: [String] = ["All Restaurants","American","Breakfast & Brunch", "Cafe", "Chinese", "Indian", "Mexican", "SteakHouse", "Sushi", "Vegetarian"]
+    var pickedType = "All Restaurants"
     
-    var wedges = [UIImageView]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //makeSearch(latitude: self.latitude, longitude: self.longitude, radius: self.searchRadius, prices: self.prices, rating: self.minRating)
-        setupWheel()
-        setupSpinBUtton()
-        setupChosen()
-        
-        wheel.isHidden = true
-        spinButton.isHidden = true
-        
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Refresh", style: UIBarButtonItemStyle.plain, target: self, action: #selector(refreshRestaurants))
-        /*
-         //request for authorization
-         //self.locationManager.requestAlwaysAuthorization()
-         self.locationManager.requestWhenInUseAuthorization()
-         
-         //start updating location once authorized
-         
-         if CLLocationManager.locationServicesEnabled() {
-         locationManager.delegate = self
-         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-         locationManager.startUpdatingLocation()
-         }
-         
-         */
-        //getAccessToken()
-        //makeSearch(latitude: self.latitude, longitude: self.longitude)
-        wheel.isUserInteractionEnabled = true
-        chosen.textAlignment = .center
-        
-        //loadWheelButtons()
-        //loadWheelOptions()
-        spinButton.layer.cornerRadius = 50
-        //print(self.view.center.x.description + " " + self.view.center.y.description)
-        let button = UIButton(frame: rect1)
-        let x = self.view.center.x
-        let y = self.view.center.y - 90
-        button.center = CGPoint(x: x, y: y)
-        //button.backgroundColor = .black
-        button.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-        self.view.addSubview(button)
-        
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: Selector(("rightSwiped")))
-        swipeRight.direction = UISwipeGestureRecognizerDirection.right
-        self.view.addGestureRecognizer(swipeRight)
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        makeSearch(latitude: self.latitude, longitude: self.longitude, radius: self.searchRadius, prices: self.prices, rating: self.minRating)
-        hideWedges()
-    }
-    
-    func refreshRestaurants() {
-        makeSearch(latitude: self.latitude, longitude: self.longitude, radius: self.searchRadius, prices: self.prices, rating: self.minRating)
-        hideWedges()
-    }
-    
-    func rightSwiped() {
-        print("Swiped Right!")
-    }
-    
-    func setupWheel() {
-        
-        self.wheelSize = Int(self.view.frame.width -  50)
-        self.wheelHalfSize = self.wheelSize / 2
-        self.wheelQuarterSize = self.wheelSize / 4
-        
-        self.wheel = UIImageView()
-        self.wheel.image = UIImage(named: "wheel1")
-        //let width = CGFloat(400)
-        //let height = CGFloat(400)
-        let width = self.wheelSize
-        let height = self.wheelSize
-        let x = (Int(self.view.frame.width) - width) / 2
-        let y = (Int(self.view.frame.height) - height) / 2
-        self.wheel.frame = CGRect(x: x, y: y, width: width, height: height)
-        self.wheel.contentMode = .scaleAspectFit
-        self.view.addSubview(self.wheel)
-        
-        
-        var wedge = UIImage(named: "wedge2")
-        var positions: [[Int]] = [[0, 0], [self.wheelHalfSize, 0], [self.wheelHalfSize, self.wheelHalfSize], [0, self.wheelHalfSize]]
-        
-        for index in 0...3 {
-            var wedgeView = UIImageView()
-            let wedgeWidth = self.wheelHalfSize
-            let wedgeHeight = self.wheelHalfSize
-            let wedgeX = positions[index][0]
-            let wedgeY = positions[index][1]
-            wedgeView.frame = CGRect(x: wedgeX, y: wedgeY, width: wedgeWidth, height: wedgeHeight)
-            wedgeView.image = wedge
-            wedgeView.transform = wedgeView.transform.rotated(by: CGFloat(M_PI_2 * Double(index)))
-            self.wedges.append(wedgeView)
-            wedgeView.isHidden = true
-            self.wheel.addSubview(wedgeView)
-            
-        }
-        
-    }
-    
-    func setupSpinBUtton() {
-        self.spinButton = UIButton()
-        self.spinButton.setTitle("SPIN", for: UIControlState.normal)
-        let width = CGFloat(self.wheelHalfSize / 2)
-        let height = CGFloat(self.wheelHalfSize / 2)
-        let xPos = (self.view.frame.width - width) / 2
-        let yPos = (self.view.frame.height - height) / 2
-        self.spinButton.frame = CGRect(x: xPos, y: yPos, width: width, height: height)
-        self.spinButton.backgroundColor = UIColor.black
-        self.spinButton.addTarget(self, action: #selector(spin), for: .touchUpInside)
-        self.view.addSubview(self.spinButton)
-    }
-    
-    func setupChosen() {
-        self.chosen = UITextView()
-        let width = CGFloat(200)
-        let height = CGFloat(100)
-        let x = (self.view.frame.width - width) / 2
-        let y = (self.view.frame.height - height) / 2
-        self.chosen.frame = CGRect(x: x, y: y - 500, width: width, height: height)
-        self.chosen.textColor = UIColor.black
-        self.view.addSubview(self.chosen)
-    }
-    
-    func loadWheelOptions() {
-        for view in self.wheel.subviews {
-            if view is UILabel {
-                view.removeFromSuperview()
-            }
-        }
-        
-        textToImage(index: 0, drawText: options[0].1 as NSString , inImage: wheel, atPoint: CGPoint(x: self.wheelHalfSize - self.wheelQuarterSize, y: self.wheelHalfSize - self.wheelQuarterSize), withAngle: CGFloat(M_PI_4 * Double(7)))
-        textToImage(index: 1, drawText: options[1].1 as NSString, inImage: wheel, atPoint: CGPoint(x: self.wheelHalfSize + self.wheelQuarterSize, y: self.wheelHalfSize - self.wheelQuarterSize), withAngle:
-            CGFloat(M_PI_4))
-        textToImage(index: 2, drawText: options[2].1 as NSString, inImage: wheel, atPoint: CGPoint(x: self.wheelHalfSize + self.wheelQuarterSize, y: self.wheelHalfSize + self.wheelQuarterSize), withAngle:
-            CGFloat(M_PI_4 * Double(3)))
-        textToImage(index: 3, drawText: options[3].1 as NSString, inImage: wheel, atPoint: CGPoint(x: self.wheelHalfSize - self.wheelQuarterSize, y: self.wheelHalfSize + self.wheelQuarterSize), withAngle:
-            CGFloat(M_PI_4 * Double(5)))
-        
-    }
-    
-    func shuffle(originalArray: Array<Any>) -> Array<Any> {
-        var result = originalArray
-        result.indices.dropLast().forEach {
-            guard case let index = Int(arc4random_uniform(UInt32(result.count - $0))) + $0, index != $0 else { return }
-            swap(&result[$0], &result[index])
-        }
-        return result
-    }
-    
-    //    func loadWheelButtons() {
-    //        let shiftx = 90.0
-    //        let shifty = 110.0
-    //        let button1 = UIButton(frame: CGRect(x:195 - shiftx, y: 75 - shifty + 50, width:120, height:50))
-    //        button1.setTitle(options[0], for: .normal)
-    //        button1.backgroundColor = .black
-    //        button1.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-    //        buttonArray.append(button1)
-    //        let button4 = UIButton(frame: CGRect(x:317.5 - shiftx, y: 197.5 - shifty, width:60, height:100))
-    //        button4.setTitle(options[1], for: .normal)
-    //
-    //        button4.backgroundColor = .blue
-    //        button4.addTarget(self, action: #selector(showDetails2), for: .touchUpInside)
-    //
-    //        buttonArray.append(button4)
-    //        let button2 = UIButton(frame: CGRect(x:195 - shiftx, y: 320 - shifty, width:120, height:50))
-    //        button2.backgroundColor = .yellow
-    //        button2.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-    //
-    //        button2.setTitle(options[2], for: .normal)
-    //
-    //        buttonArray.append(button2)
-    //        let button3 = UIButton(frame: CGRect(x:72.5 - shiftx + 60, y: 197.5 - shifty, width:60, height:100))
-    //        button3.backgroundColor = .red
-    //        button3.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-    //        button3.setTitle(options[3], for: .normal)
-    //
-    //        buttonArray.append(button3)
-    //
-    //        for button in buttonArray{
-    //            wheel.addSubview(button)
-    //        }
-    //        hideButtons()
-    //
-    //    }
-    func loadCustomViewIntoController()
-    {
-        let xstart = self.view.center.x/4
-        let ystart = self.view.center.y/2
-        let width = self.view.frame.width - 2*xstart
-        let height = self.view.frame.height - 2*ystart + 200
-        myCustomView = UIView(frame: CGRect(x: xstart, y: ystart, width: width, height: height))
-        myCustomView.backgroundColor = .blue
-        self.view.addSubview(myCustomView)
-        
-        myCustomView.isHidden = false
-        
-        let okayButton = UIButton(frame: CGRect(x: xstart, y: ystart + 100, width: 200, height: 50))
-        okayButton.backgroundColor = .yellow
-        okayButton.setTitle("Done", for: .normal)
-        okayButton.setTitleColor(.black, for: .normal)
-        myCustomView.addSubview(okayButton)
-        
-        let label = UILabel(frame: CGRect(x: xstart, y: ystart, width: 200, height: 50))
-        label.textAlignment = .center
-        label.backgroundColor = .white
-        label.text = "Details for option: " + option
-        myCustomView.addSubview(label)
-        
-        okayButton.addTarget(self, action: #selector(self.okButtonImplementation), for:.touchUpInside)
-        
-    }
-    
-    
-    func okButtonImplementation(sender:UIButton){
-        myCustomView.isHidden = true
-    }
-    
-    func showDetails(sender: UIButton!){
-        if(hasFinishedSpinning){
-            print("Show Details")
-            showPopUp()
-            //loadCustomViewIntoController()
-        }
-    }
-    
-    /*func showDetails2(sender: UIButton!){
-     if(hasFinishedSpinning){
-     print("Show Details")
-     loadCustomViewIntoController()
-     }
-     }*/
-    
-    func textToImage(index: Int, drawText text: NSString, inImage imageView: UIImageView, atPoint point: CGPoint, withAngle angle: CGFloat) {
-        let textView = UILabel()
-        textView.backgroundColor = UIColor.clear
-        textView.textAlignment = .center
-        textView.numberOfLines = 3
-        textView.text = text as String
-        textView.frame = CGRect(x: Int(point.x) - self.wheelQuarterSize, y: Int(point.y) - self.wheelQuarterSize, width: self.wheelHalfSize, height: self.wheelHalfSize)
-        //print(textView.frame)
-        //var transform = CGAffineTransform(translationX: 150, y: 92)
-        var transform = CGAffineTransform(rotationAngle:angle)
-        textView.transform = transform
-        imageView.addSubview(textView)
-        
-        //        let textColor = UIColor.white
-        //        let textFont = UIFont(name: "Helvetica Bold", size: 12)!
-        //
-        //        let scale = UIScreen.main.scale
-        //        UIGraphicsBeginImageContextWithOptions(image.size, false, scale)
-        //
-        //        let textFontAttributes = [
-        //            NSFontAttributeName: textFont,
-        //            NSForegroundColorAttributeName: textColor,
-        //            ] as [String : Any]
-        //        image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
-        //
-        //        let rect = CGRect(origin: point, size: image.size)
-        //        text.draw(in: rect, withAttributes: textFontAttributes)
-        //
-        //        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        //        UIGraphicsEndImageContext()
-        //
-        //        return newImage!
+        self.width = Int(self.view.frame.width - 60)
+        self.height = 100
+        scrollView = UIScrollView()
+        scrollView.frame = self.view.bounds
+        scrollView.contentSize = CGSize(width: self.view.frame.width, height: 810)
+        self.setupUsernameTextField(x: 30, y: 30)
+        self.setUpRestaurantType(x:30, y: 130)
+        self.addStarAssests()
+        self.setupRating(x:30, y: 280)
+        self.addPriceAssets()
+        self.setUpPrice(x:30, y: 430)
+        self.setUpSearchRadius(x: 30, y: 580)
+        self.view.addSubview(scrollView)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.done, target: self, action: #selector(doneTapped))
+        // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func didReceiveMemoryWarning() {
@@ -323,211 +73,247 @@ class WheelViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func spin(_ sender: Any) {
-        if (hasFinishedSpinning){
-            //hideButtons()
-            hideWedges()
-            hasFinishedSpinning = false
-            var spinResult = M_PI*4*(Double(arc4random())/0xFFFFFFFF) + M_PI*2
-            if ((spinResult - position) < M_PI*2){
-                spinResult += M_PI*2
+    func doneTapped() {
+        let count = self.navigationController?.viewControllers.count
+        let profilesVC = self.navigationController?.viewControllers[count!-2] as! UserProfilesViewController
+        profilesVC.userProfiles.append(UserProfile(userID: 0, username: self.usernameTextField.text!, rating: self.minRatings, priceRanges: [self.onePriceTapped, self.twoPriceTapped, self.threePriceTapped, self.fourPriceTapped], maxDistance: self.searchRadius, type: self.pickedType))
+        profilesVC.activeProfiles.append(false)
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    func saveProfile() {
+        guard let appDelegate =
+            UIApplication.shared.delegate as? AppDelegate else {
+                return
+        }
+        
+        let managedContext = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        let userProfile = NSEntityDescription.insertNewObject(forEntityName: "UserProfileEntity", into: managedContext)
+        
+        userProfile.setValue(self.usernameTextField.text, forKey: "username")
+        userProfile.setValue(self.minRatings, forKey: "rating")
+        userProfile.setValue(self.onePriceTapped, forKey: "priceRange0")
+        userProfile.setValue(self.twoPriceTapped, forKey: "priceRange1")
+        userProfile.setValue(self.threePriceTapped, forKey: "priceRange2")
+        userProfile.setValue(self.fourPriceTapped, forKey: "priceRange3")
+        userProfile.setValue(self.typePickerView.selectedRow(inComponent: 0).description, forKey: "foodType")
+        //userProfile.setValue(self.username, forKey: <#T##String#>)
+        
+        do {
+            try managedContext.save()
+            //people.append(person)
+        } catch let error as NSError {
+            print("Could not save. \(error), \(error.userInfo)")
+        }
+    }
+    
+    func setupUsernameTextField(x: Int, y: Int) {
+        self.usernameLabel = UILabel()
+        self.usernameLabel.frame = CGRect(x: x, y: y, width: Int(width), height: height/2)
+        self.usernameLabel.text = "Username"
+        self.scrollView.addSubview(self.usernameLabel)
+        
+        self.usernameTextField = UITextField()
+        self.usernameTextField.frame = CGRect(x: x, y: y+50, width: Int(width), height: height/2)
+        self.scrollView.addSubview(self.usernameTextField)
+    }
+  
+    func setUpRestaurantType(x: Int, y: Int) {
+        self.typeLabel = UILabel()
+        self.typeLabel.frame = CGRect(x: x, y: y, width: Int(width), height: height/2)
+        self.typeLabel.text = "Type of Food"
+        self.scrollView.addSubview(self.typeLabel)
+        
+        self.typePickerView = UIPickerView()
+        self.typePickerView.dataSource = self
+        self.typePickerView.delegate = self
+        self.typePickerView.frame = CGRect(x: x, y: y+50, width: Int(width), height: height)
+        self.scrollView.addSubview(self.typePickerView)
+    }
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return typeArray.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return typeArray[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        self.pickedType = typeArray[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+        return self.view.frame.width/2
+    }
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 36.0
+    }
+    
+    func setupRating(x: Int, y: Int) {
+        self.ratingLabel = UILabel()
+        self.ratingLabel.frame = CGRect(x: x, y: y, width: Int(width), height: height/2)
+        self.ratingLabel.text = "Rating"
+        self.scrollView.addSubview(self.ratingLabel)
+        
+        self.ratingStarsImageView = UIImageView()
+        self.ratingStarsImageView.frame = CGRect(x: x, y: y+50, width: Int(width), height: height)
+        self.ratingStarsImageView.contentMode = .scaleAspectFit
+        self.ratingStarsImageView.isUserInteractionEnabled = true
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(ratingTapped))
+        self.ratingStarsImageView.addGestureRecognizer(tapRecognizer)
+        self.ratingStarsImageView.image = self.ratingStarsImages[2]
+        self.scrollView.addSubview(self.ratingStarsImageView)
+        
+    }
+    func ratingTapped(gestureRecognizer: UITapGestureRecognizer) {
+        let ratingView = gestureRecognizer.view!
+        let tapLocation = gestureRecognizer.location(in: ratingView)
+        let width = self.view.frame.width - 60
+        let offset = width/5
+        if (tapLocation.x < offset) {
+            self.ratingStarsImageView.image = self.ratingStarsImages[0]
+            self.minRatings = 1
+        }
+        else if (tapLocation.x < 2*offset) {
+            self.ratingStarsImageView.image = self.ratingStarsImages[1]
+            self.minRatings = 2
+        }
+        else if (tapLocation.x < 3*offset) {
+            self.ratingStarsImageView.image = self.ratingStarsImages[2]
+            self.minRatings = 3
+        }
+        else if (tapLocation.x < 4*offset) {
+            self.ratingStarsImageView.image = self.ratingStarsImages[3]
+            self.minRatings = 4
+        }
+        else {
+            self.ratingStarsImageView.image = self.ratingStarsImages[4]
+            self.minRatings = 5
+        }
+    }
+    
+    func addStarAssests() {
+        self.ratingStarsImages.append(UIImage(named: "regular_1")!)
+        self.ratingStarsImages.append(UIImage(named: "regular_2")!)
+        self.ratingStarsImages.append(UIImage(named: "regular_3")!)
+        self.ratingStarsImages.append(UIImage(named: "regular_4")!)
+        self.ratingStarsImages.append(UIImage(named: "regular_5")!)
+    }
+    
+    func setUpPrice(x: Int, y: Int){
+        self.priceLabel = UILabel()
+        self.priceLabel.frame = CGRect(x: x, y: y, width: Int(width), height: height/2)
+        self.priceLabel.text = "Prices"
+        self.scrollView.addSubview(self.priceLabel)
+        let iconWidth = self.width/4
+        
+        for index in 0...3 {
+            let imageView = UIImageView()
+            imageView.frame = CGRect(x: x + Int(iconWidth)*index, y: y + 50, width: Int(iconWidth), height: height)
+            imageView.contentMode = .scaleAspectFit
+            imageView.isUserInteractionEnabled = true
+            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(priceTapped))
+            imageView.addGestureRecognizer(tapRecognizer)
+            if (index == 0 || index == 1) {
+                imageView.image = self.priceImages[index*2 + 1]
             }
-            let spinAnimation = CABasicAnimation()
-            spinAnimation.fromValue = position
-            spinAnimation.toValue = spinResult
-            spinAnimation.duration = 5
-            spinAnimation.repeatCount = 0
-            spinAnimation.isAdditive = true
-            spinAnimation.isRemovedOnCompletion = false
-            spinAnimation.fillMode = kCAFillModeForwards
-            spinAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseOut)
-            wheel.layer.add(spinAnimation, forKey: "transform.rotation.z")
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 5) {
-                self.position = spinResult.truncatingRemainder(dividingBy: M_PI*2)
-                self.option = self.chooseBasedOnPosition(atPosition: self.position)
-                self.logoImg = self.chooseImgBasedOnPosition(atPosition: self.position)
-                self.weburl = self.chooseWebURLBasedOnPosition(atPosition: self.position)
-                self.hasFinishedSpinning = true
-                print(self.position/M_PI)
-                self.chosen.text = self.option
-                self.optionIndex = self.chooseIndexBasedOnPosition(atPosition: self.position)
-                //self.buttonArray[self.optionIndex].isHidden = false
-                print(self.optionIndex)
-                print(self.options[self.optionIndex])
-                self.usedRestaurants[self.options[self.optionIndex].1] = true
-                self.wedges[self.optionIndex].isHidden = false
-                self.showPopUp()
+            else{
+                imageView.image = self.priceImages[index*2]
             }
-            
+            self.scrollView.addSubview(imageView)
+            self.priceImageViews.append(imageView)
         }
         
     }
-    func hideButtons() {
-        for button in self.buttonArray{
-            button.isHidden = true
-        }
-    }
-    func hideWedges() {
-        for wedge in self.wedges {
-            wedge.isHidden = true
-        }
-    }
-    func chooseIndexBasedOnPosition(atPosition pos: Double) -> Int {
-        if (pos <  M_PI_2){
-            return 0
-        }
-        else if (pos <  M_PI_2 * 2) {
-            return 3
-        }
-        else if (pos < M_PI_2 * 3){
-            return 2
-        }
-        else {
-            return 1
-        }
-    }
-    func chooseBasedOnPosition(atPosition pos: Double) -> String{
-        return options[chooseIndexBasedOnPosition(atPosition: pos)].1
-    }
-    
-    func chooseImgBasedOnPosition(atPosition pos: Double) -> String {
-        return logoImgUrl[chooseIndexBasedOnPosition(atPosition: pos)]
-    }
-    
-    func chooseWebURLBasedOnPosition(atPosition pos: Double) -> String {
-        return websiteUrl[chooseIndexBasedOnPosition(atPosition: pos)]
-    }
-    
-    
-    func makeSearch(latitude: String, longitude: String, radius: Int, prices: [Bool], rating: Int) {
-        var U = "https://api.yelp.com/v3/businesses/search?term="
-        var typeQuery = ""
-        if (type == "All Restaurants"){
-            typeQuery = "restaurants"
-        }
-        else {
-            typeQuery = type
-        }
-        U += typeQuery
-        U += "&latitude="
-        U += latitude
-        U += "&longitude="
-        U += longitude
-        U += "&limit=20"
-        U += "&radius="
-        U += String(radius - 234)
-        print(U)
-        U += "&price="
-        var hasSetFirst = false
-        var priceQuery = ""
-        for index in 0...3{
-            if !hasSetFirst {
-                if prices[index] {
-                    priceQuery.append(String(index+1))
-                    hasSetFirst = true
-                }
+    func priceTapped(gestureRecognizer: UITapGestureRecognizer) {
+        let priceView = gestureRecognizer.view!
+        let maxX = Int(priceView.frame.maxX)
+        let iconReference = self.width/4 + 30
+        if (maxX <= iconReference) {
+            if !onePriceTapped {
+                self.priceImageViews[0].image = priceImages[1]
+                onePriceTapped = true
             }
             else {
-                if prices[index] {
-                    priceQuery.append("," + String(index+1))
-                }
+                self.priceImageViews[0].image = priceImages[0]
+                onePriceTapped = false
             }
         }
-        U += priceQuery
-        print(U)
-        var request = URLRequest(url: URL(string: U)!)
-        request.httpMethod = "GET"
-        request.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
+        else if (maxX <= iconReference*2){
+            if !twoPriceTapped {
+                self.priceImageViews[1].image = priceImages[3]
+                twoPriceTapped = true
+            }
+            else {
+                self.priceImageViews[1].image = priceImages[2]
+                twoPriceTapped = false
+            }
+            
+        }
+        else if (maxX <= iconReference*3) {
+            if !threePriceTapped {
+                self.priceImageViews[2].image = priceImages[5]
+                threePriceTapped = true
+            }
+            else {
+                self.priceImageViews[2].image = priceImages[4]
+                threePriceTapped = false
+            }
+            
+        }
+        else {
+            if !fourPriceTapped {
+                self.priceImageViews[3].image = priceImages[7]
+                fourPriceTapped = true
+            }
+            else {
+                self.priceImageViews[3].image = priceImages[6]
+                fourPriceTapped = false
+            }
+            
+        }
+    }
+    
+    func addPriceAssets() {
+        self.priceImages.append(UIImage(named: "e_1")!)
+        self.priceImages.append(UIImage(named: "f_1")!)
+        self.priceImages.append(UIImage(named: "e_2")!)
+        self.priceImages.append(UIImage(named: "f_2")!)
+        self.priceImages.append(UIImage(named: "e_3")!)
+        self.priceImages.append(UIImage(named: "f_3")!)
+        self.priceImages.append(UIImage(named: "e_4")!)
+        self.priceImages.append(UIImage(named: "f_4")!)
+    }
+    
+    func setUpSearchRadius(x: Int, y: Int) {
+        self.radiusLabel = UILabel()
+        self.radiusLabel.frame = CGRect(x: x, y: y, width: Int(width), height: height/2)
+        self.radiusLabel.text = "Max Distance: 5 Miles"
+        self.scrollView.addSubview(self.radiusLabel)
         
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config)
-        let task = session.dataTask(with: request, completionHandler: {(data, response, error) in
-            DispatchQueue.main.async {
-                
-                
-                if(data != nil){
-                    let responseString = String(data: data!, encoding: .utf8)
-                    print("responseString = \(responseString!)")
-                    let jsonResult: JSON = JSON(data: data!)
-                    let businesses : [JSON] = jsonResult["businesses"].array!
-                    self.businessesArray = businesses
-                    self.businessesArray = self.shuffle(originalArray: self.businessesArray) as! [JSON]
-                    var i = 0
-                    for business in self.businessesArray {
-                        print(business["name"].stringValue)
-                        if i < 4 {
-                            if (business["rating"].doubleValue >= Double(self.minRating) && self.usedRestaurants[business["id"].stringValue] == nil){
-                                self.options[i] = (business["id"].stringValue, business["name"].stringValue)
-                                self.logoImgUrl[i] = business["image_url"].stringValue
-                                self.websiteUrl[i] = business["id"].stringValue
-                                i = i + 1
-                            }
-                        }
-                    }
-                    self.loadWheelOptions()
-                    //self.loadWheelButtons()
-                    self.wheel.isHidden = false
-                    self.spinButton.isHidden = false
-                    
-                    
-                }
-            }
-        })
-        task.resume()
-    }
-    func getAccessToken() {
-        let appID = "DRksLe3it7tL8VAQ6oL3tA"
-        let appSecret = "Pc2Jd4Txagz6Sj5ETteAQX2H49FL1nvOGMzb1EM2BZn66A2Y13OrrLh4i9vyZNoD"
-        var request = URLRequest(url: URL(string: "https://api.yelp.com/oauth2/token")!)
-        request.httpMethod = "POST"
-        var postString = "grant_type=client_credentials"
-        postString += "&client_id=" + appID
-        postString += "&client_secret=" + appSecret
-        request.httpBody = postString.data(using: .utf8)
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error=\(error)")
-                return
-            }
-            
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(response)")
-            }
-            
-            let responseString = String(data: data, encoding: .utf8)
-            print("responseString = \(responseString)")
-        }
-        task.resume()
+        self.radiusSlider = UISlider()
+        self.radiusSlider.minimumValue = 1
+        self.radiusSlider.maximumValue = 25
+        self.radiusSlider.isContinuous = true
+        self.radiusSlider.value = 5
+        
+        self.radiusSlider.frame = CGRect(x: x, y: y + 50, width: Int(width), height: height)
+        self.radiusSlider.addTarget(self, action: #selector(radiusDidChange(sender:)), for: .valueChanged)
+        self.scrollView.addSubview(self.radiusSlider)
+        
     }
     
-    func getframeheight() -> CGFloat {
-        return view.frame.size.height
+    func radiusDidChange(sender: UISlider!) {
+        //self.ratingStarsImageView.image = ratingStarsImages[Int(2*round(ratingSlider.value*2)/2.0 - 2)]
+        let currentRadius = self.radiusSlider.value
+        let roundedRadius = round(currentRadius*10)/10
+        self.searchRadius = Double(roundedRadius)
+        self.radiusLabel.text = "Search Radius: " + String(roundedRadius) + " Miles"
     }
-    
-    func getframewidth() -> CGFloat {
-        return view.frame.size.width
-    }
-    
-    
-    var popViewController : PopUpViewController!
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    override init(nibName nibNameOrNil: String!, bundle nibBundleOrNil: Bundle!) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-    
-    
-    func showPopUp() {
-        let bundle = Bundle(for: PopUpViewController.self)
-        self.popViewController = PopUpViewController(nibName: "PopUpViewController", bundle: bundle, frame: self.view.frame)
-        self.popViewController.title = "This is a popup view"
-        self.popViewController.showInView(self.view, withImage: logoImg, withMessage: option, withURL: weburl, animated: true)
-    }
-    
 }
-
-

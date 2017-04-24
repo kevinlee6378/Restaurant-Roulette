@@ -38,6 +38,11 @@ class WheelViewController: UIViewController {
     var logoImg = ""
     var weburl = ""
     
+    var wheelSize: Int = 0
+    var wheelHalfSize: Int = 0
+    var wheelQuarterSize: Int = 0
+    
+    
     var businessesArray: [JSON] = []
     var usedRestaurants: [String: Bool] = [:]
     
@@ -108,24 +113,31 @@ class WheelViewController: UIViewController {
     }
     
     func setupWheel() {
+        
+        self.wheelSize = Int(self.view.frame.width -  50)
+        self.wheelHalfSize = self.wheelSize / 2
+        self.wheelQuarterSize = self.wheelSize / 4
+        
         self.wheel = UIImageView()
         self.wheel.image = UIImage(named: "wheel1")
-        let width = CGFloat(400)
-        let height = CGFloat(400)
-        let x = (self.view.frame.width - width) / 2
-        let y = (self.view.frame.height - height) / 2
+        //let width = CGFloat(400)
+        //let height = CGFloat(400)
+        let width = self.wheelSize
+        let height = self.wheelSize
+        let x = (Int(self.view.frame.width) - width) / 2
+        let y = (Int(self.view.frame.height) - height) / 2
         self.wheel.frame = CGRect(x: x, y: y, width: width, height: height)
         self.wheel.contentMode = .scaleAspectFit
         self.view.addSubview(self.wheel)
         
         
         var wedge = UIImage(named: "wedge2")
-        var positions: [[Int]] = [[0, 0], [200, 0], [200, 200], [0, 200]]
+        var positions: [[Int]] = [[0, 0], [self.wheelHalfSize, 0], [self.wheelHalfSize, self.wheelHalfSize], [0, self.wheelHalfSize]]
         
         for index in 0...3 {
             var wedgeView = UIImageView()
-            let wedgeWidth = 200
-            let wedgeHeight = 200
+            let wedgeWidth = self.wheelHalfSize
+            let wedgeHeight = self.wheelHalfSize
             let wedgeX = positions[index][0]
             let wedgeY = positions[index][1]
             wedgeView.frame = CGRect(x: wedgeX, y: wedgeY, width: wedgeWidth, height: wedgeHeight)
@@ -142,8 +154,8 @@ class WheelViewController: UIViewController {
     func setupSpinBUtton() {
         self.spinButton = UIButton()
         self.spinButton.setTitle("SPIN", for: UIControlState.normal)
-        let width = CGFloat(100)
-        let height = CGFloat(100)
+        let width = CGFloat(self.wheelHalfSize / 2)
+        let height = CGFloat(self.wheelHalfSize / 2)
         let xPos = (self.view.frame.width - width) / 2
         let yPos = (self.view.frame.height - height) / 2
         self.spinButton.frame = CGRect(x: xPos, y: yPos, width: width, height: height)
@@ -170,12 +182,12 @@ class WheelViewController: UIViewController {
             }
         }
         
-        textToImage(index: 0, drawText: options[0].1 as NSString , inImage: wheel, atPoint: CGPoint(x: 200 - 100, y: 200 - 100), withAngle: CGFloat(M_PI_4 * Double(7)))
-        textToImage(index: 1, drawText: options[1].1 as NSString, inImage: wheel, atPoint: CGPoint(x: 200 + 100, y: 200 - 100), withAngle:
+        textToImage(index: 0, drawText: options[0].1 as NSString , inImage: wheel, atPoint: CGPoint(x: self.wheelHalfSize - self.wheelQuarterSize, y: self.wheelHalfSize - self.wheelQuarterSize), withAngle: CGFloat(M_PI_4 * Double(7)))
+        textToImage(index: 1, drawText: options[1].1 as NSString, inImage: wheel, atPoint: CGPoint(x: self.wheelHalfSize + self.wheelQuarterSize, y: self.wheelHalfSize - self.wheelQuarterSize), withAngle:
             CGFloat(M_PI_4))
-        textToImage(index: 2, drawText: options[2].1 as NSString, inImage: wheel, atPoint: CGPoint(x: 200 + 100, y: 200 + 100), withAngle:
+        textToImage(index: 2, drawText: options[2].1 as NSString, inImage: wheel, atPoint: CGPoint(x: self.wheelHalfSize + self.wheelQuarterSize, y: self.wheelHalfSize + self.wheelQuarterSize), withAngle:
             CGFloat(M_PI_4 * Double(3)))
-        textToImage(index: 3, drawText: options[3].1 as NSString, inImage: wheel, atPoint: CGPoint(x: 200 - 100, y: 200 + 100), withAngle:
+        textToImage(index: 3, drawText: options[3].1 as NSString, inImage: wheel, atPoint: CGPoint(x: self.wheelHalfSize - self.wheelQuarterSize, y: self.wheelHalfSize + self.wheelQuarterSize), withAngle:
             CGFloat(M_PI_4 * Double(5)))
         
     }
@@ -278,7 +290,7 @@ class WheelViewController: UIViewController {
         textView.textAlignment = .center
         textView.numberOfLines = 3
         textView.text = text as String
-        textView.frame = CGRect(x: point.x - 100, y: point.y - 100, width: 200, height: 200)
+        textView.frame = CGRect(x: Int(point.x) - self.wheelQuarterSize, y: Int(point.y) - self.wheelQuarterSize, width: self.wheelHalfSize, height: self.wheelHalfSize)
         //print(textView.frame)
         //var transform = CGAffineTransform(translationX: 150, y: 92)
         var transform = CGAffineTransform(rotationAngle:angle)
@@ -403,7 +415,7 @@ class WheelViewController: UIViewController {
         U += longitude
         U += "&limit=20"
         U += "&radius="
-        U += String(radius)
+        U += String(radius - 234)
         print(U)
         U += "&price="
         var hasSetFirst = false
