@@ -6,10 +6,12 @@
 //  Copyright © 2017 Kevin Lee. All rights reserved.
 //
 
+import CoreData
 import UIKit
 
 class UserProfilesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var profilesTableView: UITableView!
+    var userProfileDataObjects: [NSManagedObject] = []
     var userProfiles: [UserProfile] = []
     var activeProfiles: [Bool] = []
     
@@ -54,6 +56,11 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
         var count = 0
         var typeString = ""
         
+        if userProfiles.count == 0 {
+            // return default
+            return UserProfile()
+        }
+        
         for index in 0...userProfiles.count-1 {
             if self.activeProfiles[index] {
                 count += 1
@@ -69,10 +76,6 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
                     typeString.append(profile.type + ",")
                 }
             }
-        }
-        if count == 0 {
-            // return default
-            return UserProfile()
         }
         
         averageRating = averageRating / count

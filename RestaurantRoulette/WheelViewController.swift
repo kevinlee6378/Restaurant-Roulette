@@ -511,7 +511,7 @@ class WheelViewController: UIViewController {
     
     func showPopUp() {
         let bundle = Bundle(for: PopUpViewController.self)
-        self.popViewController = PopUpViewController(nibName: "PopUpViewController", bundle: bundle)
+        self.popViewController = PopUpViewController(nibName: "PopUpViewController", bundle: bundle, frame: self.view.frame)
         self.popViewController.title = "This is a popup view"
         self.popViewController.showInView(self.view, withImage: logoImg, withMessage: option, withURL: weburl, animated: true)
     }

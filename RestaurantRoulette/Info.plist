@@ -41,7 +41,6 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-<<<<<<< HEAD
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>To Use App</string>
 	<key>CFBundleURLTypes</key>
@@ -55,7 +54,5 @@
 			<string>None</string>
 		</dict>
 	</array>
-=======
->>>>>>> 1d5825d2f281bb205eb5672a94e9f337aab5e3f1
 </dict>
 </plist>
