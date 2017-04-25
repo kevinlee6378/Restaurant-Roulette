@@ -49,6 +49,7 @@ class UserPreferencesViewController: UIViewController, UIPickerViewDelegate, UIP
     var pickedType = "All Restaurants"
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.width = Int(self.view.frame.width - 60)

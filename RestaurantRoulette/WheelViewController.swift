@@ -305,42 +305,7 @@ class WheelViewController: UIViewController {
         }
         return result
     }
-    
-    //    func loadWheelButtons() {
-    //        let shiftx = 90.0
-    //        let shifty = 110.0
-    //        let button1 = UIButton(frame: CGRect(x:195 - shiftx, y: 75 - shifty + 50, width:120, height:50))
-    //        button1.setTitle(options[0], for: .normal)
-    //        button1.backgroundColor = .black
-    //        button1.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-    //        buttonArray.append(button1)
-    //        let button4 = UIButton(frame: CGRect(x:317.5 - shiftx, y: 197.5 - shifty, width:60, height:100))
-    //        button4.setTitle(options[1], for: .normal)
-    //
-    //        button4.backgroundColor = .blue
-    //        button4.addTarget(self, action: #selector(showDetails2), for: .touchUpInside)
-    //
-    //        buttonArray.append(button4)
-    //        let button2 = UIButton(frame: CGRect(x:195 - shiftx, y: 320 - shifty, width:120, height:50))
-    //        button2.backgroundColor = .yellow
-    //        button2.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-    //
-    //        button2.setTitle(options[2], for: .normal)
-    //
-    //        buttonArray.append(button2)
-    //        let button3 = UIButton(frame: CGRect(x:72.5 - shiftx + 60, y: 197.5 - shifty, width:60, height:100))
-    //        button3.backgroundColor = .red
-    //        button3.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-    //        button3.setTitle(options[3], for: .normal)
-    //
-    //        buttonArray.append(button3)
-    //
-    //        for button in buttonArray{
-    //            wheel.addSubview(button)
-    //        }
-    //        hideButtons()
-    //
-    //    }
+
     func loadCustomViewIntoController()
     {
         let xstart = self.view.center.x/4
@@ -368,7 +333,6 @@ class WheelViewController: UIViewController {
         okayButton.addTarget(self, action: #selector(self.okButtonImplementation), for:.touchUpInside)
         
     }
-    
     
     func okButtonImplementation(sender:UIButton){
         myCustomView.isHidden = true
@@ -510,15 +474,8 @@ class WheelViewController: UIViewController {
     
     
     func makeSearch(latitude: String, longitude: String, radius: Int, prices: [Bool], rating: Int) {
-        var U = "https://api.yelp.com/v3/businesses/search?term="
-        var typeQuery = ""
-        if (type == "All Restaurants"){
-            typeQuery = "restaurants"
-        }
-        else {
-            typeQuery = type
-        }
-        U += typeQuery
+        var U = "https://api.yelp.com/v3/businesses/search?term=restaurants"
+        U += "&open_now=true"
         U += "&latitude="
         U += latitude
         U += "&longitude="
@@ -544,6 +501,12 @@ class WheelViewController: UIViewController {
             }
         }
         U += priceQuery
+        let typeQuery = self.type
+        if (typeQuery != "all"){
+            U += "&categories="
+            U += typeQuery
+        }
+        
         print(U)
         var request = URLRequest(url: URL(string: U)!)
         request.httpMethod = "GET"

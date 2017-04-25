@@ -14,6 +14,7 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
     var userProfileDataObjects: [NSManagedObject] = []
     var userProfiles: [UserProfile] = []
     var activeProfiles: [Bool] = []
+    var dictionary: [String:String] = ["All Restaurants": "all", "American": "newamerican", "Breakfast & Brunch":"breakfast_brunch", "Cafe" : "cafes", "Chinese": "chinese", "Indian": "indpak", "Mexican": "mexican", "SteakHouse": "steak", "Sushi": "sushi", "Vegetarian": "vegetarian"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,11 +74,16 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
                     }
                 }
                 if (profile.type != "All Restaurants"){
-                    typeString.append(profile.type + ",")
+                    typeString.append(self.dictionary[profile.type]! + ",")
                 }
             }
         }
-        
+        if(typeString != ""){
+            typeString.remove(at: typeString.index(before: typeString.endIndex))
+        }
+        else {
+            typeString = "all"
+        }
         averageRating = averageRating / count
         averageRadius = averageRadius / Double(count)
         

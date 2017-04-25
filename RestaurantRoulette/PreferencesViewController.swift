@@ -63,6 +63,7 @@ class PreferencesViewController: UIViewController, UIPickerViewDelegate, UIPicke
             pushToMVC()
         }
     }
+    var dictionary: [String:String] = ["All Restaurants": "all", "American": "newamerican", "Breakfast & Brunch":"breakfast_brunch", "Cafe" : "cafes", "Chinese": "chinese", "Indian": "indpak", "Mexican": "mexican", "SteakHouse": "steak", "Sushi": "sushi", "Vegetarian": "vegetarian"]
     
     
     override func viewDidLoad() {
@@ -96,7 +97,7 @@ class PreferencesViewController: UIViewController, UIPickerViewDelegate, UIPicke
         menuVC.prices[1] = self.twoPriceTapped
         menuVC.prices[2] = self.threePriceTapped
         menuVC.prices[3] = self.fourPriceTapped
-        menuVC.type = self.pickedType
+        menuVC.type = self.dictionary[self.pickedType]!
     }
     func setUpRestaurantType(x: Int, y: Int) {
         self.typeLabel = UILabel()

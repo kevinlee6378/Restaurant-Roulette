@@ -18,15 +18,13 @@ class MenuViewController: UIViewController {
     var minRatings = 3
     var searchRadius = 5.0
     var prices = [true, true, false, false]
-    var type = "All Restaurants"
+    var type = "all"
 
     var locButton: UIButton!
     var prefButton: UIButton!
     var profilesButton: UIButton!
     var wheelButton: UIButton!
     var imageView: UIImageView!
-    var dictionary: [String:String] = ["All Restaurants": "all", "American": "newamerican", "Breakfast & Brunch":"breakfast_brunch", "Cafe" : "cafes", "Chinese": "chinese", "Indian": "indpak", "Mexican": "mexican", "SteakHouse": "steak", "Sushi": "sushi", "Vegetarian": "vegetarian"]
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()

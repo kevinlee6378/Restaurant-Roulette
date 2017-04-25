@@ -145,7 +145,7 @@ extension LocationViewController: HandleMapSearch {
     
     func dropPinZoomIn(_ placemark: MKPlacemark){
         // cache the pin
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
             self.YourLocationIsSet()
         }
         selectedPin = placemark
