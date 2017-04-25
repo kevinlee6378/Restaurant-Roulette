@@ -53,7 +53,6 @@ class WheelViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //makeSearch(latitude: self.latitude, longitude: self.longitude, radius: self.searchRadius, prices: self.prices, rating: self.minRating)
         setupWheel()
         setupSpinBUtton()
         setupChosen()
@@ -62,41 +61,6 @@ class WheelViewController: UIViewController {
         spinButton.isHidden = true
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Refresh", style: UIBarButtonItemStyle.plain, target: self, action: #selector(refreshRestaurants))
-        /*
-         //request for authorization
-         //self.locationManager.requestAlwaysAuthorization()
-         self.locationManager.requestWhenInUseAuthorization()
-         
-         //start updating location once authorized
-         
-         if CLLocationManager.locationServicesEnabled() {
-         locationManager.delegate = self
-         locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-         locationManager.startUpdatingLocation()
-         }
-         
-         */
-        //getAccessToken()
-        //makeSearch(latitude: self.latitude, longitude: self.longitude)
-        wheel.isUserInteractionEnabled = true
-        chosen.textAlignment = .center
-        
-        //loadWheelButtons()
-        //loadWheelOptions()
-        spinButton.layer.cornerRadius = CGFloat(Int(Double(self.wheelQuarterSize)/2.0))
-        //print(self.view.center.x.description + " " + self.view.center.y.description)
-        //let button = UIButton(frame: rect1)
-        //let x = self.view.center.x
-        //let y = self.view.center.y - 90
-        //button.center = CGPoint(x: x, y: y)
-        //button.backgroundColor = .black
-        //button.addTarget(self, action: #selector(showDetails), for: .touchUpInside)
-        //self.view.addSubview(button)
-        
-        //let swipeRight = UISwipeGestureRecognizer(target: self, action: Selector(("rightSwiped")))
-        //swipeRight.direction = UISwipeGestureRecognizerDirection.right
-        //self.view.addGestureRecognizer(swipeRight)
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -109,10 +73,6 @@ class WheelViewController: UIViewController {
         hideWedges()
     }
     
-    func rightSwiped() {
-        print("Swiped Right!")
-    }
-    
     func setupWheel() {
         
         self.wheelSize = Int(self.view.frame.width -  50)
@@ -122,16 +82,12 @@ class WheelViewController: UIViewController {
         self.wheel = UIImageView()
         self.wheel.isUserInteractionEnabled = true
         self.wheel.image = UIImage(named: "wheel1")
-        //let width = CGFloat(400)
-        //let height = CGFloat(400)
         let width = self.wheelSize
         let height = self.wheelSize
         let x = (Int(self.view.frame.width) - width) / 2
         let y = (Int(self.view.frame.height) - height) / 2
         self.wheel.frame = CGRect(x: x, y: y, width: width, height: height)
         self.wheel.contentMode = .scaleAspectFit
-        //let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
-        //self.wheel.addGestureRecognizer(panGesture)
         
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(respondToSwipeGesture))
         swipeRight.direction = UISwipeGestureRecognizerDirection.right
@@ -153,11 +109,11 @@ class WheelViewController: UIViewController {
 
         
         
-        var wedge = UIImage(named: "wedge2")
+        let wedge = UIImage(named: "wedge2")
         var positions: [[Int]] = [[0, 0], [self.wheelHalfSize, 0], [self.wheelHalfSize, self.wheelHalfSize], [0, self.wheelHalfSize]]
         
         for index in 0...3 {
-            var wedgeView = UIImageView()
+            let wedgeView = UIImageView()
             let wedgeWidth = self.wheelHalfSize
             let wedgeHeight = self.wheelHalfSize
             let wedgeX = positions[index][0]
@@ -181,8 +137,6 @@ class WheelViewController: UIViewController {
             let midY = self.wheel.frame.origin.y + self.wheel.frame.height/2
             let midX = self.wheel.frame.origin.x + self.wheel.frame.width/2
 
-            //let yLength = self.wheel.frame.maxY-self.wheel.frame.minY
-            //let xLength = self.wheel.frame.maxX-self.wheel.frame.minX
             switch swipeGesture.direction {
             case UISwipeGestureRecognizerDirection.right:
                 if (location.y < midY){
@@ -190,10 +144,8 @@ class WheelViewController: UIViewController {
                 }
                 else {
                     self.directionModifier = -1.0
-                    print("got here")
                 }
                 self.spin()
-                print("Swiped right")
             case UISwipeGestureRecognizerDirection.down:
                 if (location.x < midX){
                     self.directionModifier = -1.0
@@ -202,17 +154,14 @@ class WheelViewController: UIViewController {
                     self.directionModifier = 1.0
                 }
                 self.spin()
-                print("Swiped down")
             case UISwipeGestureRecognizerDirection.left:
                 if (location.y < midY){
                     self.directionModifier = -1.0
                 }
                 else {
                     self.directionModifier = 1.0
-                    print("ds")
                 }
                 self.spin()
-                print("Swiped left")
             case UISwipeGestureRecognizerDirection.up:
                 if (location.x < midX){
                     self.directionModifier = 1.0
@@ -221,38 +170,9 @@ class WheelViewController: UIViewController {
                     self.directionModifier = -1.0
                 }
                 self.spin()
-                print("Swiped up")
             default:
                 break
             }
-        }
-    }
-    func handlePanGesture(panGesture: UIPanGestureRecognizer){
-        //let gestureTranslation = panGesture.translation(in: self.view)
-        //var start: CGPoint = panGesture.location(in: self.view)
-        //var end: CGPoint
-        //let gestureVelocity = panGesture.velocity(in: self.wheel)
-        var start = 0.0
-        var end = 0.0
-        var time = 0.0
-        var speed = 0.0
-        if panGesture.state == UIGestureRecognizerState.began {
-            // add something you want to happen when the Label Panning has started
-            //print("start")
-            start = CFAbsoluteTimeGetCurrent()
-            //start = panGesture.location(in: self.view)
-        }
-        
-        if panGesture.state == UIGestureRecognizerState.ended {
-            // add something you want to happen when the Label Panning has ended
-            //end = panGesture.location(in: self.view)
-            end = CFAbsoluteTimeGetCurrent()
-            time = end - start
-            //print("end " + String(time))
-            //print(start.x.description + " " + start.y.description)
-            //print(end.x.description + " " + end.y.description)
-            //print("trans" + gestureTranslation.x.description + " " + gestureTranslation.y.description)
-            //print("velocity" + gestureVelocity.x.description + " " + gestureVelocity.y.description)
         }
     }
     
@@ -266,6 +186,7 @@ class WheelViewController: UIViewController {
         self.spinButton.frame = CGRect(x: xPos, y: yPos, width: width, height: height)
         self.spinButton.backgroundColor = UIColor.black
         self.spinButton.addTarget(self, action: #selector(spin), for: .touchUpInside)
+        self.spinButton.layer.cornerRadius = CGFloat(Int(Double(self.wheelQuarterSize)/2.0))
         self.view.addSubview(self.spinButton)
     }
     
@@ -277,6 +198,7 @@ class WheelViewController: UIViewController {
         let y = (self.view.frame.height - height) / 2
         self.chosen.frame = CGRect(x: x, y: y - 500, width: width, height: height)
         self.chosen.textColor = UIColor.black
+        self.chosen.textAlignment = .center
         self.view.addSubview(self.chosen)
     }
     
@@ -340,18 +262,9 @@ class WheelViewController: UIViewController {
     
     func showDetails(sender: UIButton!){
         if(hasFinishedSpinning){
-            //print("Show Details")
             showPopUp()
-            //loadCustomViewIntoController()
         }
     }
-    
-    /*func showDetails2(sender: UIButton!){
-     if(hasFinishedSpinning){
-     print("Show Details")
-     loadCustomViewIntoController()
-     }
-     }*/
     
     func textToImage(index: Int, drawText text: NSString, inImage imageView: UIImageView, atPoint point: CGPoint, withAngle angle: CGFloat) {
         let textView = UILabel()
@@ -360,31 +273,9 @@ class WheelViewController: UIViewController {
         textView.numberOfLines = 3
         textView.text = text as String
         textView.frame = CGRect(x: Int(point.x) - self.wheelQuarterSize, y: Int(point.y) - self.wheelQuarterSize, width: self.wheelHalfSize, height: self.wheelHalfSize)
-        //print(textView.frame)
-        //var transform = CGAffineTransform(translationX: 150, y: 92)
-        var transform = CGAffineTransform(rotationAngle:angle)
+        let transform = CGAffineTransform(rotationAngle:angle)
         textView.transform = transform
         imageView.addSubview(textView)
-        
-        //        let textColor = UIColor.white
-        //        let textFont = UIFont(name: "Helvetica Bold", size: 12)!
-        //
-        //        let scale = UIScreen.main.scale
-        //        UIGraphicsBeginImageContextWithOptions(image.size, false, scale)
-        //
-        //        let textFontAttributes = [
-        //            NSFontAttributeName: textFont,
-        //            NSForegroundColorAttributeName: textColor,
-        //            ] as [String : Any]
-        //        image.draw(in: CGRect(origin: CGPoint.zero, size: image.size))
-        //
-        //        let rect = CGRect(origin: point, size: image.size)
-        //        text.draw(in: rect, withAttributes: textFontAttributes)
-        //
-        //        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        //        UIGraphicsEndImageContext()
-        //
-        //        return newImage!
     }
     
     override func didReceiveMemoryWarning() {
@@ -394,12 +285,10 @@ class WheelViewController: UIViewController {
     
     func spin() {
         if (hasFinishedSpinning){
-            //hideButtons()
             hideWedges()
             hasFinishedSpinning = false
-            var spinResultTemp = (M_PI*4*(Double(arc4random())/0xFFFFFFFF) + M_PI*2)*3
+            let spinResultTemp = (M_PI*4*(Double(arc4random())/0xFFFFFFFF) + M_PI*2)*3
             var spinResult = spinResultTemp * directionModifier
-            //var spinResult = -8*M_PI + 3*M_PI/7
             if ((spinResult - position) < M_PI*2){
                 spinResult += M_PI*2
             }
@@ -425,7 +314,6 @@ class WheelViewController: UIViewController {
                 print(self.position/M_PI)
                 self.chosen.text = self.option
                 self.optionIndex = self.chooseIndexBasedOnPosition(atPosition: self.position)
-                //self.buttonArray[self.optionIndex].isHidden = false
                 print(self.optionIndex)
                 print(self.options[self.optionIndex])
                 self.usedRestaurants[self.options[self.optionIndex].1] = true
@@ -519,7 +407,7 @@ class WheelViewController: UIViewController {
                 
                 
                 if(data != nil){
-                    let responseString = String(data: data!, encoding: .utf8)
+                    //let responseString = String(data: data!, encoding: .utf8)
                     //print("responseString = \(responseString!)")
                     let jsonResult: JSON = JSON(data: data!)
                     let businesses : [JSON] = jsonResult["businesses"].array!
@@ -527,7 +415,6 @@ class WheelViewController: UIViewController {
                     self.businessesArray = self.shuffle(originalArray: self.businessesArray) as! [JSON]
                     var i = 0
                     for business in self.businessesArray {
-                        //print(business["name"].stringValue)
                         if i < 4 {
                             if (business["rating"].doubleValue >= Double(self.minRating) && self.usedRestaurants[business["id"].stringValue] == nil){
                                 self.options[i] = (business["id"].stringValue, business["name"].stringValue)
@@ -538,7 +425,6 @@ class WheelViewController: UIViewController {
                         }
                     }
                     self.loadWheelOptions()
-                    //self.loadWheelButtons()
                     self.wheel.isHidden = false
                     self.spinButton.isHidden = false
                     

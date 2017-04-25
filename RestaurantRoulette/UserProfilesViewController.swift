@@ -110,7 +110,7 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "profileCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "profileCell", for: indexPath)
         cell.textLabel?.text = self.userProfiles[indexPath.row].username
         return cell
     }

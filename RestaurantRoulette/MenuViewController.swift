@@ -152,15 +152,18 @@ class MenuViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         //print(longitude! + " " + latitude!)
-        if let longitude = self.longitude {
-            if let latitude = self.latitude {
+        if self.longitude != nil {
+            if self.latitude != nil {
                 //print(longitude + " " + latitude)
                 enableButton(button: self.wheelButton)
                 enableButton(button: self.prefButton)
+                enableButton(button: self.profilesButton)
+
             }
         } else {
             disableButton(button: self.wheelButton)
             disableButton(button: self.prefButton)
+            disableButton(button: self.profilesButton)
         }
         
     }

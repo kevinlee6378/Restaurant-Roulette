@@ -25,6 +25,8 @@ class LocationViewController : UIViewController {
     var resultSearchController: UISearchController? = nil
     var selectedPin:MKPlacemark? = nil
     
+    var longitude = 0.0
+    var latitude = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,17 +88,19 @@ class LocationViewController : UIViewController {
     }
     
     func setToCurrentLocation(alert: UIAlertAction!) {
+        
+        while (self.latitude == 0.0) {
+            //wait
+        }
         let myAnnotation: MKPointAnnotation = MKPointAnnotation()
-        myAnnotation.coordinate = CLLocationCoordinate2DMake(mapView.userLocation.coordinate.latitude, mapView.userLocation.coordinate.longitude);
+        //myAnnotation.coordinate = CLLocationCoordinate2DMake(mapView.userLocation.coordinate.latitude, mapView.userLocation.coordinate.longitude);
+        myAnnotation.coordinate = CLLocationCoordinate2DMake(latitude, longitude)
         mapView.addAnnotation(myAnnotation)
         let span = MKCoordinateSpanMake(0.05, 0.05)
         let region = MKCoordinateRegionMake(myAnnotation.coordinate, span)
         mapView.setRegion(region, animated: true)
         let count = self.navigationController?.viewControllers.count;
-        //print(count!)
         let menuVC = self.navigationController?.viewControllers[count!-2] as! MenuViewController
-        print(String(describing: myAnnotation.coordinate.latitude))
-        
         menuVC.latitude = String(describing: myAnnotation.coordinate.latitude)
         menuVC.longitude = String(describing: myAnnotation.coordinate.longitude)
         YourLocationIsSet()
@@ -129,6 +133,9 @@ extension LocationViewController : CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let locValue:CLLocationCoordinate2D = locationManager.location!.coordinate
+        self.latitude = locValue.latitude
+        self.longitude = locValue.longitude
         guard let location = locations.first else { return }
         let span = MKCoordinateSpanMake(0.05, 0.05)
         let region = MKCoordinateRegion(center: location.coordinate, span: span)
@@ -165,10 +172,7 @@ extension LocationViewController: HandleMapSearch {
         let region = MKCoordinateRegionMake(placemark.coordinate, span)
         mapView.setRegion(region, animated: true)
         let count = self.navigationController?.viewControllers.count;
-        print(count!)
         let menuVC = self.navigationController?.viewControllers[count!-2] as! MenuViewController
-        print(String(describing: selectedPin!.coordinate.latitude))
-
         menuVC.latitude = String(describing: selectedPin!.coordinate.latitude)
         menuVC.longitude = String(describing: selectedPin!.coordinate.longitude)
         
