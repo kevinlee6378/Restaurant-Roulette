@@ -57,11 +57,18 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
         var count = 0
         var typeString = ""
         
-        if userProfiles.count == 0 {
+        var numActive = 0
+        print(userProfiles.count)
+        print(activeProfiles.count)
+        for index in 0...activeProfiles.count - 1 {
+            if activeProfiles[index] {
+                numActive = numActive + 1
+            }
+        }
+        if userProfiles.count == 0 || numActive == 0{
             // return default
             return UserProfile()
         }
-        
         for index in 0...userProfiles.count-1 {
             if self.activeProfiles[index] {
                 count += 1

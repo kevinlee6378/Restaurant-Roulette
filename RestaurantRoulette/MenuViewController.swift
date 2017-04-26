@@ -95,6 +95,7 @@ class MenuViewController: UIViewController {
                 wheelVC.searchRadius = Int(compiledProfile.maxDistance * 1609.34)
                 wheelVC.prices = compiledProfile.priceRanges
                 wheelVC.type = compiledProfile.type
+            
             }
             else {
                 let wheelVC = self.viewsArray[3] as! WheelViewController

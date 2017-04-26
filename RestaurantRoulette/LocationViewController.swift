@@ -90,7 +90,7 @@ class LocationViewController : UIViewController {
     func setToCurrentLocation(alert: UIAlertAction!) {
         
         while (self.latitude == 0.0) {
-            //wait
+            //wait  
         }
         let myAnnotation: MKPointAnnotation = MKPointAnnotation()
         //myAnnotation.coordinate = CLLocationCoordinate2DMake(mapView.userLocation.coordinate.latitude, mapView.userLocation.coordinate.longitude);
@@ -133,13 +133,14 @@ extension LocationViewController : CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let locValue:CLLocationCoordinate2D = locationManager.location!.coordinate
+        if let locValue:CLLocationCoordinate2D = locationManager.location?.coordinate {
         self.latitude = locValue.latitude
         self.longitude = locValue.longitude
         guard let location = locations.first else { return }
         let span = MKCoordinateSpanMake(0.05, 0.05)
         let region = MKCoordinateRegion(center: location.coordinate, span: span)
         mapView.setRegion(region, animated: true)
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
