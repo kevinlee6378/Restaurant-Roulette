@@ -117,6 +117,7 @@ class UserPreferencesViewController: UIViewController, UIPickerViewDelegate, UIP
         
         self.usernameTextField = UITextField()
         self.usernameTextField.frame = CGRect(x: x, y: y+50, width: Int(width), height: height/2)
+        self.usernameTextField.borderStyle = UITextBorderStyle.bezel
         self.scrollView.addSubview(self.usernameTextField)
     }
   

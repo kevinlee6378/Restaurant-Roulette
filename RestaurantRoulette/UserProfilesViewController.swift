@@ -21,6 +21,7 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
         setupTableView()
         setupUserProfiles()
+        self.navigationItem.title = "Select Profiles"
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -57,6 +58,9 @@ class UserProfilesViewController: UIViewController, UITableViewDelegate, UITable
         var count = 0
         var typeString = ""
         
+        if activeProfiles.count == 0 {
+            return UserProfile()
+        }
         var numActive = 0
         print(userProfiles.count)
         print(activeProfiles.count)

@@ -25,18 +25,25 @@ class MenuViewController: UIViewController {
     var profilesButton: UIButton!
     var wheelButton: UIButton!
     var imageView: UIImageView!
+    var didPreferences = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         setup()
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Profiles", style: UIBarButtonItemStyle.plain, target: self, action: #selector(gotoProfiles))
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+    func gotoProfiles(){
+        self.navigationController?.pushViewController(viewsArray[2], animated: true)
+
+    }
+ 
     func setup(){
         addDummyViews()
         self.imageView = UIImageView()
@@ -48,18 +55,18 @@ class MenuViewController: UIViewController {
         self.view.addSubview(imageView)
         let width = CGFloat(200)
         //let height = CGFloat(50)
-        let padding = self.view.frame.height/30
+        let padding = self.view.frame.height/23
        // let padding = CGFloat(self.view.frame.height / 20)
         let height = 2*padding
         var currY = self.view.frame.height / 2 - padding
         let x = (self.view.frame.width - width) / 2
         
         self.locButton = UIButton()
-        self.locButton.setTitle("Choose your location", for: UIControlState.normal)
+        self.locButton.setTitle("1. Choose your location", for: UIControlState.normal)
         self.buttonArray.append(self.locButton)
         
         self.prefButton = UIButton()
-        self.prefButton.setTitle("Pick your preferences", for: UIControlState.normal)
+        self.prefButton.setTitle("2. Pick your preferences", for: UIControlState.normal)
         self.buttonArray.append(self.prefButton)
         
         self.profilesButton = UIButton()
@@ -67,18 +74,29 @@ class MenuViewController: UIViewController {
         self.buttonArray.append(self.profilesButton)
         
         self.wheelButton = UIButton()
-        self.wheelButton.setTitle("Find a restaurant", for: UIControlState.normal)
+        self.wheelButton.setTitle("3. Find a restaurant", for: UIControlState.normal)
         self.buttonArray.append(self.wheelButton)
         
         var buttonIndex = 0
         for button in self.buttonArray {
-            button.tag = buttonIndex
-            buttonIndex += 1
-            button.frame = CGRect(x:x, y:currY, width:width, height:height)
-            button.setTitleColor(UIColor.black, for: UIControlState.normal)
-            button.addTarget(self, action: #selector(buttonClicked(sender:)), for: .touchUpInside)
-            self.view.addSubview(button)
-            currY += height + padding
+            if buttonIndex != 2{
+                button.tag = buttonIndex
+                buttonIndex += 1
+                button.frame = CGRect(x:x, y:currY, width:width, height:height)
+                button.setTitleColor(UIColor.black, for: UIControlState.normal)
+                button.addTarget(self, action: #selector(buttonClicked(sender:)), for: .touchUpInside)
+                self.view.addSubview(button)
+                currY += height + padding
+            }
+            else {
+                button.tag = buttonIndex
+                buttonIndex += 1
+                button.frame = CGRect(x:0, y:0, width:1, height:1)
+                button.setTitleColor(UIColor.black, for: UIControlState.normal)
+                button.addTarget(self, action: #selector(buttonClicked(sender:)), for: .touchUpInside)
+                button.isHidden = true;
+                self.view.addSubview(button)
+            }
         }
         
     }
@@ -117,6 +135,9 @@ class MenuViewController: UIViewController {
          //   print(b)
         //}
         //print(self.type)
+        if (sender.tag == 1){
+            self.didPreferences = true
+        }
         self.navigationController?.pushViewController(self.viewsArray[sender.tag], animated: true)
         //print(self.searchRadius)
     }
@@ -153,18 +174,49 @@ class MenuViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         //print(longitude! + " " + latitude!)
+        let profilesVC = self.viewsArray[2] as! UserProfilesViewController
+        let activeProfiles = profilesVC.activeProfiles
+        var numActive = 0
+        if !activeProfiles.isEmpty {
+            for index in 0...activeProfiles.count - 1 {
+                if activeProfiles[index] {
+                    numActive = numActive + 1
+                }
+            }
+            if (numActive != 0) {
+                if self.longitude != nil {
+                    if self.latitude != nil {
+                            disableButton(button: self.prefButton)
+                            enableButton(button: self.wheelButton)
+                    }
+                }
+                else {
+                    disableButton(button: self.prefButton)
+                }
+            }
+            else {
+                disableButton(button: self.prefButton)
+            }
+        }
+        
         if self.longitude != nil {
             if self.latitude != nil {
                 //print(longitude + " " + latitude)
-                enableButton(button: self.wheelButton)
-                enableButton(button: self.prefButton)
-                enableButton(button: self.profilesButton)
+                //enableButton(button: self.wheelButton)
+                if (numActive == 0) {
+                    enableButton(button: self.prefButton)
+                }
+                //enableButton(button: self.profilesButton)
 
             }
         } else {
             disableButton(button: self.wheelButton)
             disableButton(button: self.prefButton)
-            disableButton(button: self.profilesButton)
+            //disableButton(button: self.profilesButton)
+        }
+        
+        if didPreferences {
+            enableButton(button: self.wheelButton)
         }
         
     }
